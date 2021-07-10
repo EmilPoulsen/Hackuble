@@ -63,7 +63,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title">Script Editor</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -71,30 +71,22 @@
                 <div class="modal-body overflow-auto" style="height: 550px">
                     @*<p>Modal body text goes here.</p>*@
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">C# Code</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="@CsCode"></textarea>
+                        <b for="exampleFormControlTextarea1">C# Code</b>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" @bind="@CsCode"></textarea>
                     </div>
-                    <button type="button" class="btn btn-primary mx-2" @onclick="Compile">Compile</button><br />
-                    <pre class="overflow-auto" style="height:50px">@CompileText</pre>
-
-                    <label for="command">Command</label>
-                    <textarea class="form-control" id="command" rows="3" @bind="@CommandJSON"></textarea>
-
+                    <button type="button" class="btn btn-primary" @onclick="Compile">Compile</button><br />
+                    <textarea class="form-control mt-2" rows="1" id="comileText" @bind="@CompileText" style="background-color: #f0f0f0"></textarea>
+                    
+                    
                     <hr>
+
+
+                    <b for="command">Command</b>
+                    <textarea class="form-control" id="command" rows="3" @bind="@CommandJSON"></textarea>
                     <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
-                    <pre class="overflow-auto" style="height:50px">@ResultText</pre>
+                    @*<pre class="overflow-auto" style="height: 50px; white-space: pre-wrap; ">@ResultText</pre>*@
+                    <textarea class="form-control mt-2" rows="1" id="retultText" @bind="@ResultText" style="background-color: #f0f0f0"></textarea>
 
-
-                    @*<div class="card">
-            <div class="card-body p-0">
-                <pre class="overflow-auto" style="height:50px">@ResultText</pre>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <pre>@CompileText</pre>
-            </div>
-        </div>*@
 
                 </div>
                 <div class="modal-footer">
