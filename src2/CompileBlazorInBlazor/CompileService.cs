@@ -203,14 +203,21 @@ namespace CompileBlazorInBlazor
             instance.RunCommand(context);
             System.Diagnostics.Trace.WriteLine($"Number of cubes: {context.Cubes.Count}");
 
+            ParseContext(context);
 
             return "";
 
         }
 
-        public void ParseContext(Context context)
+        public async void ParseContext(Context context)
         {
 
+            foreach (var cube in context.Cubes)
+            {
+                await CompileService.InvokeJS("addCube", new object[] { cube.X, cube.Y, cube.Z, cube.Width, cube.Depth, cube.Height });
+            }
+
+            //await CompileService.InvokeJS("clickCube", new object[] { });
         }
 
         public string RunCompiled(Type type, CommandObject command)
