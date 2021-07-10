@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    
+
 
     <div class="d-flex mt-5">
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
@@ -76,8 +76,8 @@
                     </div>
                     <button type="button" class="btn btn-primary" @onclick="Compile">Compile</button><br />
                     <textarea class="form-control mt-2" rows="1" id="comileText" @bind="@CompileText" style="background-color: #f0f0f0"></textarea>
-                    
-                    
+
+
                     <hr>
 
 
@@ -113,109 +113,127 @@
 
 
 
-    public Guid Guid = Guid.NewGuid();
-    public string ModalDisplay = "none;";
-    public string ModalClass = "";
-    public bool ShowBackdrop = false;
+public Guid Guid = Guid.NewGuid();
+public string ModalDisplay = "none;";
+public string ModalClass = "";
+public bool ShowBackdrop = false;
 
-    string CsCode { get; set; }
-    string ResultText { get; set; }
-    string CompileText { get; set; }
-    Type CompiledType { get; set; }
-    string CommandJSON { get; set; }
+string CsCode { get; set; }
+string ResultText { get; set; }
+string CompileText { get; set; }
+Type CompiledType { get; set; }
+string CommandJSON { get; set; }
 
-    void ToggleNavMenu()
+void ToggleNavMenu()
+{
+    collapseNavMenu = !collapseNavMenu;
+}
+
+
+public void launchCommandEditor()
+{
+    ModalDisplay = "block;";
+    ModalClass = "Show";
+    ShowBackdrop = true;
+    StateHasChanged();
+}
+
+public void Close()
+{
+    ModalDisplay = "none";
+    ModalClass = "";
+    ShowBackdrop = false;
+    StateHasChanged();
+}
+
+
+public async Task Compile()
+{
+    try
     {
-        collapseNavMenu = !collapseNavMenu;
+        service.CompileLog = new List<string>();
+        CompiledType = await service.CompileOnly(CsCode);
     }
-
-
-    public void launchCommandEditor()
+    catch (Exception e)
     {
-        ModalDisplay = "block;";
-        ModalClass = "Show";
-        ShowBackdrop = true;
-        StateHasChanged();
+        service.CompileLog.Add(e.Message);
+        service.CompileLog.Add(e.StackTrace);
+        throw;
     }
-
-    public void Close()
+    finally
     {
-        ModalDisplay = "none";
-        ModalClass = "";
-        ShowBackdrop = false;
-        StateHasChanged();
+        CompileText = string.Join("\r\n", service.CompileLog);
+        this.StateHasChanged();
     }
+}
 
-
-    public async Task Compile()
+public void Run()
+{
+    System.Diagnostics.Trace.WriteLine("Hello from Run method!");
+    if (CompiledType == null) return;
+    try
     {
-        try
+        CommandObject commandObject;
+        if (!string.IsNullOrEmpty(CommandJSON))
         {
-            service.CompileLog = new List<string>();
-            CompiledType = await service.CompileOnly(CsCode);
+            commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
+            ResultText = service.RunCompiled(CompiledType, commandObject);
         }
-        catch (Exception e)
+        else
         {
-            service.CompileLog.Add(e.Message);
-            service.CompileLog.Add(e.StackTrace);
-            throw;
-        }
-        finally
-        {
-            CompileText = string.Join("\r\n", service.CompileLog);
-            this.StateHasChanged();
-        }
-    }
-
-    public void Run()
-    {
-        System.Diagnostics.Trace.WriteLine("Hello from Run method!");
-        if (CompiledType == null) return;
-        try
-        {
-            CommandObject commandObject;
-            if (!string.IsNullOrEmpty(CommandJSON))
-            {
-                commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
-                ResultText = service.RunCompiled(CompiledType, commandObject);
-            }
-            else
-            {
-                throw new Exception("No Command");
-            }
-        }
-        catch (Exception e)
-        {
-            service.CompileLog.Add(e.Message);
-            service.CompileLog.Add(e.StackTrace);
-            throw;
-        }
-        finally
-        {
-            CompileText = string.Join("\r\n", service.CompileLog);
-            this.StateHasChanged();
+            throw new Exception("No Command");
         }
     }
-
-    protected override void OnInitialized()
+    catch (Exception e)
     {
-        CsCode = @"
+        service.CompileLog.Add(e.Message);
+        service.CompileLog.Add(e.StackTrace);
+        throw;
+    }
+    finally
+    {
+        CompileText = string.Join("\r\n", service.CompileLog);
+        this.StateHasChanged();
+    }
+}
+
+protected override void OnInitialized()
+{
+    CsCode = @"
+
+        using System.Drawing;
+
         namespace CompileBlazorInBlazor.Demo
         {
-            public class MyRunClass : RunClass
-            {
-                public override void RunCommand(Context context)
-                {
-                    context.AddCube(20, 20, 20, 20, 20, 20);
-                }
-            }
+        public class MyCommand : AbstractCommand
+        {
+        public override string Name => ""Test Command 01"";
+
+        public override string Author => ""Hackathon"";
+
+        public override string Description => ""lol"";
+
+        public override Color Accent => Color.OrangeRed;
+
+        public override string CommandLineName => ""test"";
+
+        public override void RegisterInputArguments()
+        {
+            //nothing yet
         }
-        ";
+
+        public override void RunCommand(Context context)
+        {
+            context.AddCube(20, 20, 20, 20, 20, 20);
+        }
+        }
+        }";
+
         CommandJSON = @"
         {""command"":"""",
         ""data"":[
-        
+
         ]}
         ";
-    }
-}
+        }
+        }
