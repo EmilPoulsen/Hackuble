@@ -3,6 +3,8 @@
 
 <canvas></canvas>
 
+<button class="add-cube-btn" @onclick="MyButtonClick">Press me</button>
+
 @code {
 
     private static System.Timers.Timer aTimer;
@@ -58,4 +60,11 @@
         await JSRuntime.InvokeAsync<object>
             ("clickCube", new object[] { });
     }
+
+    public async void MyButtonClick()
+    {
+        await JSRuntime.InvokeAsync<object>
+            ("clickCube", new object[] { });
+    }
+
 }
