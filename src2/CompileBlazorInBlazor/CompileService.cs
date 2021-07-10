@@ -24,12 +24,14 @@ namespace CompileBlazorInBlazor
         private readonly NavigationManager _uriHelper;
         public List<string> CompileLog { get; set; }
         private List<MetadataReference> references { get; set; }
+        private CommandService _commandService;
 
 
-        public CompileService(HttpClient http, NavigationManager uriHelper)
+        public CompileService(HttpClient http, NavigationManager uriHelper, CommandService commandService)
         {
             _http = http;
             _uriHelper = uriHelper;
+            _commandService = commandService;
         }
 
         public async Task Init()
@@ -188,6 +190,14 @@ namespace CompileBlazorInBlazor
             return null;
         }
 
+        public RunClass CreateRunClass(Type type)
+        {
+            var instance = Activator.CreateInstance(type) as RunClass;
+            return instance;
+        }
+
+
+
         public string RunCompiled(Type type, CommandObject command)
         {
             //if (string.IsNullOrEmpty(command.command)) return null;
@@ -213,6 +223,11 @@ namespace CompileBlazorInBlazor
 
             return "";
 
+        }
+
+        public void RegisterCommand(RunClass runClass)
+        {
+            _commandService.AddCommand(runClass);
         }
 
         public async void ParseContext(Context context)
