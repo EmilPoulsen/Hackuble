@@ -9,6 +9,10 @@
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" @bind="@CsCode"></textarea>
     </div>
     <button type="button" class="btn btn-primary" @onclick="Run">Run</button>
+    <label for="command">Command</label>
+    <input type="text" class="form-text" id="command" @bind="@InvokeCommand" />
+    <label for="arguments">Arguments JSON</label>
+    <input type="text" class="form-text" id="arguments" @bind="@ArgumentsJSON" />
     <div class="card">
         <div class="card-body">
             <pre>@ResultText</pre>
@@ -25,14 +29,27 @@
 {
     string CsCode { get; set; }
     string ResultText { get; set; }
+    Type CompiledType { get; set; }
     string CompileText { get; set; }
+    string InvokeCommand { get; set; }
+    string ArgumentsJSON { get; set; }
 
     public async Task Run()
     {
         try
         {
             service.CompileLog = new List<string>();
-            ResultText = await service.CompileAndRun(CsCode);
+            CompiledType = await service.CompileOnly(CsCode);
+            ArgumentsObject argumentsObj;
+            if (!string.IsNullOrEmpty(ArgumentsJSON))
+            {
+                argumentsObj = Newtonsoft.Json.JsonConvert.DeserializeObject<ArgumentsObject>(ArgumentsJSON);
+                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand, argumentsObj);
+            }
+            else
+            {
+                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand);
+            }
         }
         catch (Exception e)
         {
@@ -56,12 +73,22 @@ namespace CompileBlazorInBlazor.Demo
 {
     public class RunClass
     {
-        public string Run(string name, int count)
+        public string Run()
         {
             var sb = new StringBuilder();
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < 5; i++)
             {
-                sb.AppendLine($""{i}) Hello, {name}!"");
+                sb.AppendLine($""{i}) Hello, A!"");
+            }
+
+            return sb.ToString();
+        }
+        public string RunB()
+        {
+            var sb = new StringBuilder();
+            for (int i = 15; i < 20; i++)
+            {
+                sb.AppendLine($""{i}) Hello, B!"");
             }
 
             return sb.ToString();
