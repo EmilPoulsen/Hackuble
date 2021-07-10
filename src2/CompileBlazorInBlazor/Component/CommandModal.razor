@@ -17,9 +17,7 @@
                 </div>
                 <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
                 <label for="command">Command</label>
-                <input type="text" class="form-text" id="command" @bind="@InvokeCommand" />
-                <label for="arguments">Arguments JSON</label>
-                <input type="text" class="form-text" id="arguments" @bind="@ArgumentsJSON" />
+                <textarea class="form-control" id="command" rows="5" @bind="@CommandJSON"></textarea>
                 <div class="card">
                     <div class="card-body p-0">
                         <pre class="overflow-auto" style="height:50px">@ResultText</pre>
@@ -53,8 +51,7 @@
     string ResultText { get; set; }
     string CompileText { get; set; }
     Type CompiledType { get; set; }
-    string InvokeCommand { get; set; }
-    string ArgumentsJSON { get; set; }
+    string CommandJSON { get; set; }
 
     public void Open()
     {
@@ -78,15 +75,15 @@
         {
             service.CompileLog = new List<string>();
             CompiledType = await service.CompileOnly(CsCode);
-            ArgumentsObject argumentsObj;
-            if (!string.IsNullOrEmpty(ArgumentsJSON))
+            CommandObject commandObject;
+            if (!string.IsNullOrEmpty(CommandJSON))
             {
-                argumentsObj = Newtonsoft.Json.JsonConvert.DeserializeObject<ArgumentsObject>(ArgumentsJSON);
-                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand, argumentsObj);
+                commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
+                ResultText = (string)service.RunCompiled(CompiledType, commandObject);
             }
             else
             {
-                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand);
+                throw new Exception("No Command");
             }
         }
         catch (Exception e)
@@ -111,28 +108,28 @@
         {
             public class RunClass
             {
-                public string Run()
+                public string Run(string name)
                 {
                     var sb = new StringBuilder();
                     for (int i = 0; i < 5; i++)
                     {
-                        sb.AppendLine($""{i}) Hello, A!"");
+                        sb.AppendLine($""{i}) Hello, {name}!"");
                     }
 
                     return sb.ToString();
                 }
-                public string RunB()
+                public string RunB(bool toggle)
                 {
-                    var sb = new StringBuilder();
-                    for (int i = 15; i < 20; i++)
-                    {
-                        sb.AppendLine($""{i}) Hello, B!"");
-                    }
-
-                    return sb.ToString();
+                    return (!toggle).ToString();
                 }
             }
         }
+        ";
+        CommandJSON = @"
+        {""command"":"""",
+        ""data"":[
+        
+        ]}
         ";
     }
 }
