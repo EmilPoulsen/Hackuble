@@ -165,6 +165,7 @@
 
     public void Run()
     {
+        System.Diagnostics.Trace.WriteLine("Hello from Run method!");
         if (CompiledType == null) return;
         try
         {
@@ -172,7 +173,7 @@
             if (!string.IsNullOrEmpty(CommandJSON))
             {
                 commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
-                ResultText = (string)service.RunCompiled(CompiledType, commandObject);
+                ResultText = (string)service.RunCompiled2(CompiledType, commandObject);
             }
             else
             {
@@ -195,25 +196,13 @@
     protected override void OnInitialized()
     {
         CsCode = @"
-        using System.Text;
-
         namespace CompileBlazorInBlazor.Demo
         {
-            public class RunClass
+            public class MyRunClass2 : RunClass2
             {
-                public string Run(string name)
+                public override void RunCommand(Context context)
                 {
-                    var sb = new StringBuilder();
-                    for (int i = 0; i < 5; i++)
-                    {
-                        sb.AppendLine($""{i}) Hello, {name}!"");
-                    }
-
-                    return sb.ToString();
-                }
-                public string RunB(bool toggle)
-                {
-                    return (!toggle).ToString();
+                    context.AddCube(20, 20, 20, 20, 20, 20);
                 }
             }
         }
