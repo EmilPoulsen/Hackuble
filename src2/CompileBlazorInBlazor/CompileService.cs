@@ -198,12 +198,12 @@ namespace CompileBlazorInBlazor
 
             System.Diagnostics.Trace.WriteLine($"Here's the type: {type.FullName}");
 
-            if (!typeof(RunClass).IsAssignableFrom(type))
+            if (!typeof(AbstractCommand).IsAssignableFrom(type))
             {
                 return "";
             }
 
-            var instance = Activator.CreateInstance(type) as RunClass;
+            var instance = Activator.CreateInstance(type) as AbstractCommand;
             Context context = new Context();
 
             instance.RunCommand(context);
