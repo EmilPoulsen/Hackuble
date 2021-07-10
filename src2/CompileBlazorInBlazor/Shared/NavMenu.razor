@@ -18,14 +18,37 @@
             </NavLink>
         </li>
     </ul>
+
+    <div class="d-flex">
+        @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
+        <!-- Button trigger modal -->
+        <button class="btn btn-primary mx-auto" @onclick="() => Modal.Open()">Open Modal</button>
+
+    </div>
+
+
+    <CompileBlazorInBlazor.Component.CommandModal @ref="Modal"></CompileBlazorInBlazor.Component.CommandModal>
+
 </div>
 
 
+
+
 @functions {
+    private CompileBlazorInBlazor.Component.CommandModal Modal { get; set; }
+
     bool collapseNavMenu = true;
+    string curCommand = "";
+    bool showCommandModal = false;
 
     void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    void launchCommandEditor()
+    {
+        //curCommand = "";
+        showCommandModal = true;
     }
 }
