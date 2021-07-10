@@ -38,7 +38,8 @@
                     foreach (var command in commandService.Commands)
                     {
                         <li>
-                            <button>Command</button>
+                            @*<button @onclick="(command) => { RunCommand };">Command</button>*@
+                            <button @onclick="@(e => RunCommand(command))">Check</button>
                         </li>
                     }
                 }
@@ -139,6 +140,10 @@
 
 @functions {
 
+    void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
+    {
+        System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
+    }
 
     bool collapseNavMenu = true;
 
@@ -231,7 +236,6 @@
     {
         CsCode = @"
 
-    using System.Drawing;
 
     namespace CompileBlazorInBlazor.Demo
     {
