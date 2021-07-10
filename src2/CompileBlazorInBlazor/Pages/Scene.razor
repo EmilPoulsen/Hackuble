@@ -10,6 +10,11 @@
 
     protected async override void OnAfterRender(bool firstRender)
     {
+        if (!firstRender)
+        {
+            return;
+        }
+
         // pass reference for JSInvokables
         await JSRuntime.InvokeAsync<object>
     ("createScene", new object[] { DotNetObjectReference.Create(this) });
