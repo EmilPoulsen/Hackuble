@@ -1,4 +1,6 @@
-﻿<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+﻿@inject CompileService service
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,8 +9,18 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <p>Modal body text goes here.</p>
+            <div class="modal-body overflow-auto" style="height: 500px">
+                @*<p>Modal body text goes here.</p>*@
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">C# Code</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" @bind="@CsCode"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" @onclick="Run">Run</button>
+                <div class="card">
+                    <div class="card-body p-0">
+                        <pre class="overflow-auto" style="height:50px">@ResultText</pre>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Save changes</button>
@@ -33,6 +45,10 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
+    string CsCode { get; set; }
+    string ResultText { get; set; }
+    string CompileText { get; set; }
+
     public void Open()
     {
         ModalDisplay = "block;";
@@ -47,5 +63,49 @@
         ModalClass = "";
         ShowBackdrop = false;
         StateHasChanged();
+    }
+
+    public async Task Run()
+    {
+        try
+        {
+            service.CompileLog = new List<string>();
+            ResultText = await service.CompileAndRun(CsCode);
+        }
+        catch (Exception e)
+        {
+            service.CompileLog.Add(e.Message);
+            service.CompileLog.Add(e.StackTrace);
+            throw;
+        }
+        finally
+        {
+            CompileText = string.Join("\r\n", service.CompileLog);
+            this.StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        CsCode = @"
+            using System.Text;
+
+            namespace CompileBlazorInBlazor.Demo
+            {
+                public class RunClass
+                {
+                    public string Run(string name, int count)
+                    {
+                        var sb = new StringBuilder();
+                        for (int i = 0; i < count; i++)
+                        {
+                            sb.AppendLine($""{i}) Hello, {name}!"");
+                        }
+
+                        return sb.ToString();
+                    }
+                }
+            }
+            ";
     }
 }
