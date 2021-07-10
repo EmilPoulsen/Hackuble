@@ -186,7 +186,7 @@
             if (!string.IsNullOrEmpty(CommandJSON))
             {
                 commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
-                ResultText = (string)service.RunCompiled2(CompiledType, commandObject);
+                ResultText = service.RunCompiled2(CompiledType, commandObject);
             }
             else
             {
