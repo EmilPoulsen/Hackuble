@@ -49,7 +49,7 @@ namespace CompileBlazorInBlazor
                     Console.WriteLine(name);
                     references.Add(
                         MetadataReference.CreateFromStream(
-                            await this._http.GetStreamAsync(_uriHelper.BaseUri + "/_framework/_bin/" + name)));
+                            await this._http.GetStreamAsync(_uriHelper.BaseUri+ "/_framework/_bin/" + name)));
                 }
             }
         }
@@ -63,37 +63,37 @@ namespace CompileBlazorInBlazor
 
             CompileLog.Add("Create engine");
             //            Microsoft.AspNetCore.Blazor.Build.
-
-            var engine = RazorProjectEngine.Create(RazorConfiguration.Create(RazorLanguageVersion.Version_3_0, "Blazor", new RazorExtension[0]), fileSystem, b =>
-{
-    //                RazorExtensions.Register(b);
-
-
-    //                b.SetRootNamespace(DefaultRootNamespace);
-
-    // Turn off checksums, we're testing code generation.
-    //                b.Features.Add(new SuppressChecksum());
-
-    //                if (LineEnding != null)
-    //                {
-    //                    b.Phases.Insert(0, new ForceLineEndingPhase(LineEnding));
-    //                }
-
-    // Including MVC here so that we can find any issues that arise from mixed MVC + Components.
-    //                Microsoft.AspNetCore.Mvc.Razor.Extensions.RazorExtensions.Register(b);
-    //
-    //                // Features that use Roslyn are mandatory for components
-    //                Microsoft.CodeAnalysis.Razor.CompilerFeatures.Register(b);
-    //
-    //                b.Features.Add(new CompilationTagHelperFeature());
-    //                b.Features.Add(new DefaultMetadataReferenceFeature()
-    //                {
-    //                    References = references,
-    //                });
+            
+                        var engine = RazorProjectEngine.Create(RazorConfiguration.Create(RazorLanguageVersion.Version_3_0, "Blazor", new RazorExtension[0]), fileSystem, b =>
+            {
+                //                RazorExtensions.Register(b);
 
 
+//                b.SetRootNamespace(DefaultRootNamespace);
 
-});
+                // Turn off checksums, we're testing code generation.
+//                b.Features.Add(new SuppressChecksum());
+
+//                if (LineEnding != null)
+//                {
+//                    b.Phases.Insert(0, new ForceLineEndingPhase(LineEnding));
+//                }
+
+                // Including MVC here so that we can find any issues that arise from mixed MVC + Components.
+//                Microsoft.AspNetCore.Mvc.Razor.Extensions.RazorExtensions.Register(b);
+//
+//                // Features that use Roslyn are mandatory for components
+//                Microsoft.CodeAnalysis.Razor.CompilerFeatures.Register(b);
+//
+//                b.Features.Add(new CompilationTagHelperFeature());
+//                b.Features.Add(new DefaultMetadataReferenceFeature()
+//                {
+//                    References = references,
+//                });
+
+
+
+            });
 
 
             CompileLog.Add("Create file");
@@ -147,7 +147,7 @@ namespace CompileBlazorInBlazor
 
             CompileLog.Add("Parse SyntaxTree Success");
 
-            CSharpCompilation compilation = CSharpCompilation.Create("CompileBlazorInBlazor.Demo", new[] { syntaxTree },
+            CSharpCompilation compilation = CSharpCompilation.Create("CompileBlazorInBlazor.Demo", new[] {syntaxTree},
                 references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
             using (MemoryStream stream = new MemoryStream())
@@ -169,7 +169,7 @@ namespace CompileBlazorInBlazor
 
                 stream.Seek(0, SeekOrigin.Begin);
 
-                //                var context = new CollectibleAssemblyLoadContext();
+//                var context = new CollectibleAssemblyLoadContext();
                 Assembly assemby = AppDomain.CurrentDomain.Load(stream.ToArray());
                 return assemby;
             }
