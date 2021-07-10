@@ -192,6 +192,7 @@
         finally
         {
             CompileText = string.Join("\r\n", service.CompileLog);
+
             this.StateHasChanged();
         }
     }
@@ -230,22 +231,22 @@
     protected override void OnInitialized()
     {
         CsCode = @"
-        namespace CompileBlazorInBlazor.Demo
+    namespace CompileBlazorInBlazor.Demo
+    {
+        public class MyRunClass : RunClass
         {
-            public class MyRunClass : RunClass
+            public override void RunCommand(Context context)
             {
-                public override void RunCommand(Context context)
-                {
-                    context.AddCube(20, 20, 20, 20, 20, 20);
-                }
+                context.AddCube(20, 20, 20, 20, 20, 20);
             }
         }
-        ";
+    }
+    ";
         CommandJSON = @"
-        {""command"":"""",
-        ""data"":[
-        
-        ]}
-        ";
+    {""command"":"""",
+    ""data"":[
+
+    ]}
+    ";
     }
 }
