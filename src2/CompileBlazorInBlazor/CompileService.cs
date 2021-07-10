@@ -216,11 +216,24 @@ namespace CompileBlazorInBlazor
             return null;
         }
 
-        public string RunCompiled(Type type, string method, object[] arguments)
+        public string RunCompiled(Type type, string method, ArgumentsObject arguments)
+        {
+            CompileLog.Add(arguments.ToString());
+            var methodInfo = type.GetMethod(method);
+            var instance = Activator.CreateInstance(type);
+            return (string)methodInfo.Invoke(instance, arguments.data);
+        }
+
+        public string RunCompiled(Type type, string method)
         {
             var methodInfo = type.GetMethod(method);
             var instance = Activator.CreateInstance(type);
-            return (string)methodInfo.Invoke(instance, arguments);
+            return (string)methodInfo.Invoke(instance, null);
         }
+    }
+
+    public class ArgumentsObject
+    {
+        public object[] data { get; set; }
     }
 }
