@@ -170,8 +170,6 @@ namespace CompileBlazorInBlazor
                 Assembly assemby = AppDomain.CurrentDomain.Load(stream.ToArray());
                 return assemby;
             }
-
-            return null;
         }
 
 
@@ -189,7 +187,7 @@ namespace CompileBlazorInBlazor
 //        }
 
 
-        public async Task<string> CompileAndRun(string code)
+        public async Task<string> CompileAndRun(string code, string method)
         {
             await Init();
 
@@ -197,12 +195,32 @@ namespace CompileBlazorInBlazor
             if (assemby != null)
             {
                 var type = assemby.GetExportedTypes().FirstOrDefault();
-                var methodInfo = type.GetMethod("Run");
+                var methodInfo = type.GetMethod(method);
                 var instance = Activator.CreateInstance(type);
                 return (string) methodInfo.Invoke(instance, new object[] {"my UserName", 12});
             }
 
             return null;
+        }
+
+        public async Task<Type> CompileOnly(string code)
+        {
+            await Init();
+
+            var assemby = await this.Compile(code);
+            if (assemby != null)
+            {
+                return assemby.GetExportedTypes().FirstOrDefault();
+            }
+
+            return null;
+        }
+
+        public string RunCompiled(Type type, string method, object[] arguments)
+        {
+            var methodInfo = type.GetMethod(method);
+            var instance = Activator.CreateInstance(type);
+            return (string)methodInfo.Invoke(instance, arguments);
         }
     }
 }
