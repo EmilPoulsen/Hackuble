@@ -74,8 +74,11 @@
                         <label for="exampleFormControlTextarea1">C# Code</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" @bind="@CsCode"></textarea>
                     </div>
-                    <button type="button" class="btn btn-primary" @onclick="Compile">Compile</button><br />
-                    <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary mx-2" @onclick="Compile">Compile</button><br />
+                        <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
+                    </div>
+                    
                     <label for="command">Command</label>
                     <textarea class="form-control" id="command" rows="5" @bind="@CommandJSON"></textarea>
                     <div class="card">
