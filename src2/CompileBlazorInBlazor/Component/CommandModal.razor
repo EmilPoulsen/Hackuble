@@ -15,7 +15,11 @@
                     <label for="exampleFormControlTextarea1">C# Code</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" @bind="@CsCode"></textarea>
                 </div>
-                <button type="button" class="btn btn-primary" @onclick="Run">Run</button>
+                <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
+                <label for="command">Command</label>
+                <input type="text" class="form-text" id="command" @bind="@InvokeCommand" />
+                <label for="arguments">Arguments JSON</label>
+                <input type="text" class="form-text" id="arguments" @bind="@ArgumentsJSON" />
                 <div class="card">
                     <div class="card-body p-0">
                         <pre class="overflow-auto" style="height:50px">@ResultText</pre>
@@ -48,6 +52,9 @@
     string CsCode { get; set; }
     string ResultText { get; set; }
     string CompileText { get; set; }
+    Type CompiledType { get; set; }
+    string InvokeCommand { get; set; }
+    string ArgumentsJSON { get; set; }
 
     public void Open()
     {
@@ -70,7 +77,17 @@
         try
         {
             service.CompileLog = new List<string>();
-            ResultText = await service.CompileAndRun(CsCode);
+            CompiledType = await service.CompileOnly(CsCode);
+            ArgumentsObject argumentsObj;
+            if (!string.IsNullOrEmpty(ArgumentsJSON))
+            {
+                argumentsObj = Newtonsoft.Json.JsonConvert.DeserializeObject<ArgumentsObject>(ArgumentsJSON);
+                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand, argumentsObj);
+            }
+            else
+            {
+                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand);
+            }
         }
         catch (Exception e)
         {
@@ -88,24 +105,34 @@
     protected override void OnInitialized()
     {
         CsCode = @"
-            using System.Text;
+        using System.Text;
 
-            namespace CompileBlazorInBlazor.Demo
+        namespace CompileBlazorInBlazor.Demo
+        {
+            public class RunClass
             {
-                public class RunClass
+                public string Run()
                 {
-                    public string Run(string name, int count)
+                    var sb = new StringBuilder();
+                    for (int i = 0; i < 5; i++)
                     {
-                        var sb = new StringBuilder();
-                        for (int i = 0; i < count; i++)
-                        {
-                            sb.AppendLine($""{i}) Hello, {name}!"");
-                        }
-
-                        return sb.ToString();
+                        sb.AppendLine($""{i}) Hello, A!"");
                     }
+
+                    return sb.ToString();
+                }
+                public string RunB()
+                {
+                    var sb = new StringBuilder();
+                    for (int i = 15; i < 20; i++)
+                    {
+                        sb.AppendLine($""{i}) Hello, B!"");
+                    }
+
+                    return sb.ToString();
                 }
             }
-            ";
+        }
+        ";
     }
 }
