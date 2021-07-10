@@ -34,14 +34,14 @@
 
             <ul>
 
-            @{
-                foreach (var command in commandService.Commands)
-                {
-                    <li>
-                        <button>Command</button>
-                    </li>
+                @{
+                    foreach (var command in commandService.Commands)
+                    {
+                        <li>
+                            <button>Command</button>
+                        </li>
+                    }
                 }
-            }
             </ul>
 
 
@@ -144,133 +144,129 @@
 
 
 
-public Guid Guid = Guid.NewGuid();
-public string ModalDisplay = "none;";
-public string ModalClass = "";
-public bool ShowBackdrop = false;
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
 
-string CsCode { get; set; }
-string ResultText { get; set; }
-string CompileText { get; set; }
-Type CompiledType { get; set; }
-string CommandJSON { get; set; }
+    string CsCode { get; set; }
+    string ResultText { get; set; }
+    string CompileText { get; set; }
+    Type CompiledType { get; set; }
+    string CommandJSON { get; set; }
 
-void ToggleNavMenu()
-{
-    collapseNavMenu = !collapseNavMenu;
-}
-
-
-public void launchCommandEditor()
-{
-    ModalDisplay = "block;";
-    ModalClass = "Show";
-    ShowBackdrop = true;
-    StateHasChanged();
-}
-
-public void Close()
-{
-    ModalDisplay = "none";
-    ModalClass = "";
-    ShowBackdrop = false;
-    StateHasChanged();
-}
-
-
-public async Task Compile()
-{
-    try
+    void ToggleNavMenu()
     {
-        service.CompileLog = new List<string>();
-        CompiledType = await service.CompileOnly(CsCode);
+        collapseNavMenu = !collapseNavMenu;
     }
-    catch (Exception e)
-    {
-        service.CompileLog.Add(e.Message);
-        service.CompileLog.Add(e.StackTrace);
-        throw;
-    }
-    finally
-    {
-        CompileText = string.Join("\r\n", service.CompileLog);
-        this.StateHasChanged();
-    }
-}
 
-public void Run()
-{
-    System.Diagnostics.Trace.WriteLine("Hello from Run method!");
-    if (CompiledType == null) return;
-    try
+
+    public void launchCommandEditor()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+
+    public async Task Compile()
     {
         try
         {
             service.CompileLog = new List<string>();
             CompiledType = await service.CompileOnly(CsCode);
-            var instance = service.CreateRunClass(CompiledType);
-            commandService.AddCommand(instance);
         }
         catch (Exception e)
         {
-            commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
-            ResultText = service.RunCompiled(CompiledType, commandObject);
+            service.CompileLog.Add(e.Message);
+            service.CompileLog.Add(e.StackTrace);
+            throw;
         }
-        else
+        finally
         {
-            throw new Exception("No Command");
+            CompileText = string.Join("\r\n", service.CompileLog);
+            this.StateHasChanged();
         }
     }
-    catch (Exception e)
+
+    public void Run()
     {
-        service.CompileLog.Add(e.Message);
-        service.CompileLog.Add(e.StackTrace);
-        throw;
+        System.Diagnostics.Trace.WriteLine("Hello from Run method!");
+        if (CompiledType == null) return;
+        try
+        {
+            var instance = service.CreateRunClass(CompiledType);
+            commandService.AddCommand(instance);
+            CommandObject commandObject;
+            if (!string.IsNullOrEmpty(CommandJSON))
+            {
+                commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
+                ResultText = service.RunCompiled(CompiledType, commandObject);
+            }
+            else throw new Exception("No Command");
+        }
+        catch (Exception e)
+        {
+            service.CompileLog.Add(e.Message);
+            service.CompileLog.Add(e.StackTrace);
+            throw;
+        }
+        finally
+        {
+            CompileText = string.Join("\r\n", service.CompileLog);
+            this.StateHasChanged();
+        }
     }
-    finally
+
+    protected override void OnInitialized()
     {
-        CompileText = string.Join("\r\n", service.CompileLog);
-        this.StateHasChanged();
+        CsCode = @"
+
+    using System.Drawing;
+
+    namespace CompileBlazorInBlazor.Demo
+    {
+    public class MyCommand : AbstractCommand
+    {
+    public override string Name => ""Test Command 01"";
+
+    public override string Author => ""Hackathon"";
+
+    public override string Description => ""lol"";
+
+    public override string CommandLineName => ""test"";
+
+    public override void RegisterInputArguments()
+    {
+        //nothing yet
+    }
+
+    public override void RunCommand(Context context)
+    {
+        context.AddCube(20, 20, 20, 20, 20, 20);
+    }
+    }
+    }";
+
+        CommandJSON = @"
+    {""command"":"""",
+    ""data"":[
+
+    ]}
+    ";
     }
 }
 
-protected override void OnInitialized()
-{
-    CsCode = @"
 
-        using System.Drawing;
 
-        namespace CompileBlazorInBlazor.Demo
-        {
-        public class MyCommand : AbstractCommand
-        {
-        public override string Name => ""Test Command 01"";
 
-        public override string Author => ""Hackathon"";
-
-        public override string Description => ""lol"";
-
-        public override Color Accent => Color.OrangeRed;
-
-        public override string CommandLineName => ""test"";
-
-        public override void RegisterInputArguments()
-        {
-            //nothing yet
-        }
-
-        public override void RunCommand(Context context)
-        {
-            context.AddCube(20, 20, 20, 20, 20, 20);
-        }
-        }
-        }";
-
-        CommandJSON = @"
-        {""command"":"""",
-        ""data"":[
-
-        ]}
-        ";
-        }
-        }
+        @*public override Color Accent => Color.OrangeRed;*@

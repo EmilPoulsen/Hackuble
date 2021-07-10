@@ -10,7 +10,7 @@ namespace CompileBlazorInBlazor.Demo
         public abstract string Name { get; }
         public abstract string Author { get; }
         public abstract string Description { get; }
-        public abstract System.Drawing.Color Accent { get; }
+        //public abstract System.Drawing.Color Accent { get; }
         public abstract void RegisterInputArguments();
         public abstract string CommandLineName { get; }
         public abstract void RunCommand(Context context);
