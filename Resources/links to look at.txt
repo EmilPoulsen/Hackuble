@@ -1,0 +1,6 @@
+https://youtu.be/4pBcGmm6nCI    -   Build a WebAssembly app with Blazor & VS Code
+
+https://github.com/sjefvanleeuwen/blazor-threejs    -    blazor - three js
+
+https://www.samprof.com/2018/12/15/compile-csharp-and-blazor-inside-browser-en    -    compiling c# using blazor in the bowser
+
