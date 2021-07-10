@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject CompileService service
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">CompileBlazorInBlazor</a>
     <button class="navbar-toggler" @onclick=@ToggleNavMenu>
         <span class="navbar-toggler-icon"></span>
@@ -24,29 +26,82 @@
             </li>
         </ul>*@
 
+    <div class="mt-5" style="height:60vh">
+        <div class="px-3" id="commandContainer">
+            @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
+            <!-- Button trigger modal -->
+            @*<button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">New Command</button>*@
+            <span class="badge badge-primary">Primary</span>
+            <span class="badge badge-secondary">Secondary</span>
+            <span class="badge badge-success">Success</span>
+            <span class="badge badge-danger">Danger</span>
+            <span class="badge badge-warning">Warning</span>
+            <span class="badge badge-info">Info</span>
+            <span class="badge badge-light">Light</span>
+            <span class="badge badge-dark">Dark</span>
+        </div>
+    </div>
+
+    
+
     <div class="d-flex mt-5">
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
         <!-- Button trigger modal -->
-        <button class="btn btn-primary mx-auto" @onclick="() => Modal.Open()">New Command</button>
+        <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">New Command</button>
 
     </div>
 
 
-    <hr>
 
-    <div>
-        <span class="badge badge-primary">Primary</span>
-        <span class="badge badge-secondary">Secondary</span>
-        <span class="badge badge-success">Success</span>
-        <span class="badge badge-danger">Danger</span>
-        <span class="badge badge-warning">Warning</span>
-        <span class="badge badge-info">Info</span>
-        <span class="badge badge-light">Light</span>
-        <span class="badge badge-dark">Dark</span>
+
+    @*<CompileBlazorInBlazor.Component.CommandModal @ref="Modal"></CompileBlazorInBlazor.Component.CommandModal>*@
+
+
+
+
+    <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => Close()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body overflow-auto">
+                    @*<p>Modal body text goes here.</p>*@
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">C# Code</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" @bind="@CsCode"></textarea>
+                    </div>
+
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary mx-2" @onclick="Test">Test</button><br />
+                        <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
+                    </div>
+                    
+                    <label for="command">Command</label>
+                    <input type="text" class="form-text" id="command" @bind="@InvokeCommand" />
+                    <label for="arguments">Arguments JSON</label>
+                    <input type="text" class="form-text" id="arguments" @bind="@ArgumentsJSON" />
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <pre class="overflow-auto" style="height:50px">@ResultText</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <CompileBlazorInBlazor.Component.CommandModal @ref="Modal"></CompileBlazorInBlazor.Component.CommandModal>
+    @*if (ShowBackdrop)
+        {
+            <div class="modal-backdrop fade show"></div>
+        }*@
 
 </div>
 
@@ -57,17 +112,109 @@
     private CompileBlazorInBlazor.Component.CommandModal Modal { get; set; }
 
     bool collapseNavMenu = true;
-    string curCommand = "";
-    bool showCommandModal = false;
+
+
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    string CsCode { get; set; }
+    string ResultText { get; set; }
+    string CompileText { get; set; }
+    Type CompiledType { get; set; }
+    string InvokeCommand { get; set; }
+    string ArgumentsJSON { get; set; }
 
     void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 
-    void launchCommandEditor()
+
+    public void launchCommandEditor()
     {
-        //curCommand = "";
-        showCommandModal = true;
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+
+    public async Task Test()
+    {
+    }
+
+    public async Task Run()
+    {
+        try
+        {
+            service.CompileLog = new List<string>();
+            CompiledType = await service.CompileOnly(CsCode);
+            ArgumentsObject argumentsObj;
+            if (!string.IsNullOrEmpty(ArgumentsJSON))
+            {
+                argumentsObj = Newtonsoft.Json.JsonConvert.DeserializeObject<ArgumentsObject>(ArgumentsJSON);
+                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand, argumentsObj);
+            }
+            else
+            {
+                ResultText = (string)service.RunCompiled(CompiledType, InvokeCommand);
+            }
+        }
+        catch (Exception e)
+        {
+            service.CompileLog.Add(e.Message);
+            service.CompileLog.Add(e.StackTrace);
+            throw;
+        }
+        finally
+        {
+            CompileText = string.Join("\r\n", service.CompileLog);
+            this.StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        CsCode = @"
+        using System.Text;
+
+        namespace CompileBlazorInBlazor.Demo
+        {
+            public class RunClass
+            {
+                public string Run()
+                {
+                    var sb = new StringBuilder();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        sb.AppendLine($""{i}) Hello, A!"");
+                    }
+
+                    return sb.ToString();
+                }
+                public string RunB()
+                {
+                    var sb = new StringBuilder();
+                    for (int i = 15; i < 20; i++)
+                    {
+                        sb.AppendLine($""{i}) Hello, B!"");
+                    }
+
+                    return sb.ToString();
+                }
+            }
+        }
+        ";
     }
 }
