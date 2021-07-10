@@ -73,7 +73,7 @@ function createCube() {
     var geometry = new THREE.BoxGeometry(10, 10, 10);
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     cube = new THREE.Mesh(geometry, material);
-    cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
+    //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
     scene.add(cube);
     //camera.position.z = 5;
 }

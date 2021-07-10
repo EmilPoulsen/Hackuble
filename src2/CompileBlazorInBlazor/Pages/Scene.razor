@@ -3,6 +3,8 @@
 
 <canvas></canvas>
 
+<button class="add-cube-btn" @onclick="MyButtonClick">Press me</button>
+
 @code {
 
     private static System.Timers.Timer aTimer;
@@ -10,6 +12,11 @@
 
     protected async override void OnAfterRender(bool firstRender)
     {
+        if (!firstRender)
+        {
+            return;
+        }
+
         // pass reference for JSInvokables
         await JSRuntime.InvokeAsync<object>
     ("createScene", new object[] { DotNetObjectReference.Create(this) });
@@ -53,4 +60,11 @@
         await JSRuntime.InvokeAsync<object>
             ("clickCube", new object[] { });
     }
+
+    public async void MyButtonClick()
+    {
+        await JSRuntime.InvokeAsync<object>
+            ("clickCube", new object[] { });
+    }
+
 }
