@@ -6,19 +6,20 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using CompileBlazorInBlazor.Demo;
 using Microsoft.AspNetCore.Blazor.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
-
+using Microsoft.JSInterop;
 
 namespace CompileBlazorInBlazor
 {
     public class CompileService
     {
+        public static IJSRuntime JSRuntime;
         private readonly HttpClient _http;
         private readonly NavigationManager _uriHelper;
         public List<string> CompileLog { get; set; }
@@ -173,35 +174,6 @@ namespace CompileBlazorInBlazor
         }
 
 
-//        public class CollectibleAssemblyLoadContext : AssemblyLoadContext
-//        {
-//            public CollectibleAssemblyLoadContext() : base()
-//            {
-//            }
-//
-//
-//            protected override Assembly Load(AssemblyName assemblyName)
-//            {
-//                return null;
-//            }
-//        }
-
-
-        public async Task<string> CompileAndRun(string code, string method)
-        {
-            await Init();
-
-            var assemby = await this.Compile(code);
-            if (assemby != null)
-            {
-                var type = assemby.GetExportedTypes().FirstOrDefault();
-                var methodInfo = type.GetMethod(method);
-                var instance = Activator.CreateInstance(type);
-                return (string) methodInfo.Invoke(instance, new object[] {"my UserName", 12});
-            }
-
-            return null;
-        }
 
         public async Task<Type> CompileOnly(string code)
         {
@@ -216,6 +188,38 @@ namespace CompileBlazorInBlazor
             return null;
         }
 
+        public string RunCompiled2(Type type, CommandObject command)
+        {
+            System.Diagnostics.Trace.WriteLine($"Here's the type: {type.FullName}");
+
+            if (!typeof(RunClass2).IsAssignableFrom(type))
+            {
+                return "";
+            }
+
+            var instance = Activator.CreateInstance(type) as RunClass2;
+            Context context = new Context();
+
+            instance.RunCommand(context);
+            System.Diagnostics.Trace.WriteLine($"Number of cubes: {context.Cubes.Count}");
+
+            ParseContext(context);
+
+            return "";
+
+        }
+
+        public async void ParseContext(Context context)
+        {
+
+            foreach (var cube in context.Cubes)
+            {
+                await CompileService.InvokeJS("addCube", new object[] { cube.X, cube.Y, cube.Z, cube.Width, cube.Depth, cube.Height });
+            }
+
+            //await CompileService.InvokeJS("clickCube", new object[] { });
+        }
+
         public string RunCompiled(Type type, CommandObject command)
         {
             if (string.IsNullOrEmpty(command.command)) return null;
@@ -223,6 +227,12 @@ namespace CompileBlazorInBlazor
             var instance = Activator.CreateInstance(type);
             if (command.data.Length > 0) return (string)methodInfo.Invoke(instance, command.data);
             else return (string)methodInfo.Invoke(instance, null);
+        }
+
+        public async static Task InvokeJS(string functionName, object[] argumentsObject)
+        {
+            await JSRuntime.InvokeAsync<object>
+            (functionName, argumentsObject);
         }
     }
 
@@ -232,3 +242,32 @@ namespace CompileBlazorInBlazor
         public object[] data { get; set; }
     }
 }
+
+
+////--------------------------------------------------------
+
+//using System.Text;
+//using Microsoft.JSInterop;
+//using System.Threading.Tasks;
+
+//        namespace CompileBlazorInBlazor.Demo
+//{
+//    public class RunClass
+//    {
+//        public string Run(string name)
+//        {
+//            var sb = new StringBuilder();
+//            for (int i = 0; i < 5; i++)
+//            {
+//                sb.AppendLine($"{i}) Hello, {name}!");
+//            }
+
+//            return sb.ToString();
+//        }
+//        public async Task<object> RunB()
+//        {
+//            await CompileService.InvokeJS("clickCube", new object[] { });
+//            return null;
+//        }
+//    }
+//}

@@ -69,6 +69,14 @@ function onDocumentMouseDown(event) {
     }
 }
 
+function addCube(x, y, z, width, depth, height) {
+    var geometry = new THREE.BoxGeometry(x, y, z);
+    material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    cube = new THREE.Mesh(geometry, material);
+    //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
+    scene.add(cube);
+}
+
 function createCube() {
     var geometry = new THREE.BoxGeometry(10, 10, 10);
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
