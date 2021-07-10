@@ -218,6 +218,7 @@ namespace CompileBlazorInBlazor
 
         public string RunCompiled(Type type, CommandObject command)
         {
+            if (string.IsNullOrEmpty(command.command)) return null;
             var methodInfo = type.GetMethod(command.command);
             var instance = Activator.CreateInstance(type);
             if (command.data.Length > 0) return (string)methodInfo.Invoke(instance, command.data);

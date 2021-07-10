@@ -15,6 +15,7 @@
                     <label for="exampleFormControlTextarea1">C# Code</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" @bind="@CsCode"></textarea>
                 </div>
+                <button type="button" class="btn btn-primary" @onclick="Compile">Compile</button><br />
                 <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
                 <label for="command">Command</label>
                 <textarea class="form-control" id="command" rows="5" @bind="@CommandJSON"></textarea>
@@ -69,12 +70,31 @@
         StateHasChanged();
     }
 
-    public async Task Run()
+    public async Task Compile()
     {
         try
         {
             service.CompileLog = new List<string>();
             CompiledType = await service.CompileOnly(CsCode);
+        }
+        catch (Exception e)
+        {
+            service.CompileLog.Add(e.Message);
+            service.CompileLog.Add(e.StackTrace);
+            throw;
+        }
+        finally
+        {
+            CompileText = string.Join("\r\n", service.CompileLog);
+            this.StateHasChanged();
+        }
+    }
+
+    public void Run()
+    {
+        if (CompiledType == null) return;
+        try
+        {
             CommandObject commandObject;
             if (!string.IsNullOrEmpty(CommandJSON))
             {
