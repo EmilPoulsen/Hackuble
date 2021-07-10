@@ -99,8 +99,20 @@ function getRandomColor() {
     return color;
 }
 
+function resizeCanvasToDisplaySize() {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    if (canvas.width !== width || canvas.height !== height) {
+        // you must pass false here or three.js sadly fights the browser
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    }
+}
 
-var animate = function() {
+var animate = function () {
+    resizeCanvasToDisplaySize();
     requestAnimationFrame(animate);
     controls.update();
     cube.rotation.x += 0.01;
