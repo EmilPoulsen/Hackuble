@@ -188,16 +188,22 @@ namespace CompileBlazorInBlazor
             return null;
         }
 
-        public string RunCompiled2(Type type, CommandObject command)
+        public string RunCompiled(Type type, CommandObject command)
         {
+            //if (string.IsNullOrEmpty(command.command)) return null;
+            //var methodInfo = type.GetMethod(command.command);
+            //var instance = Activator.CreateInstance(type);
+            //if (command.data.Length > 0) return (string)methodInfo.Invoke(instance, command.data);
+            //else return (string)methodInfo.Invoke(instance, null);
+
             System.Diagnostics.Trace.WriteLine($"Here's the type: {type.FullName}");
 
-            if (!typeof(RunClass2).IsAssignableFrom(type))
+            if (!typeof(RunClass).IsAssignableFrom(type))
             {
                 return "";
             }
 
-            var instance = Activator.CreateInstance(type) as RunClass2;
+            var instance = Activator.CreateInstance(type) as RunClass;
             Context context = new Context();
 
             instance.RunCommand(context);
@@ -218,15 +224,6 @@ namespace CompileBlazorInBlazor
             }
 
             //await CompileService.InvokeJS("clickCube", new object[] { });
-        }
-
-        public string RunCompiled(Type type, CommandObject command)
-        {
-            if (string.IsNullOrEmpty(command.command)) return null;
-            var methodInfo = type.GetMethod(command.command);
-            var instance = Activator.CreateInstance(type);
-            if (command.data.Length > 0) return (string)methodInfo.Invoke(instance, command.data);
-            else return (string)methodInfo.Invoke(instance, null);
         }
 
         public async static Task InvokeJS(string functionName, object[] argumentsObject)

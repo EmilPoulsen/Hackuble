@@ -116,7 +116,6 @@
 
 
 @functions {
-    private CompileBlazorInBlazor.Component.CommandModal Modal { get; set; }
 
     bool collapseNavMenu = true;
 
@@ -186,7 +185,7 @@
             if (!string.IsNullOrEmpty(CommandJSON))
             {
                 commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
-                ResultText = service.RunCompiled2(CompiledType, commandObject);
+                ResultText = service.RunCompiled(CompiledType, commandObject);
             }
             else
             {
@@ -211,7 +210,7 @@
         CsCode = @"
         namespace CompileBlazorInBlazor.Demo
         {
-            public class MyRunClass2 : RunClass2
+            public class MyRunClass : RunClass
             {
                 public override void RunCommand(Context context)
                 {

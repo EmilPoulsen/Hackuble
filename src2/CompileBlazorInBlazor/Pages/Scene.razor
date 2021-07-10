@@ -20,8 +20,8 @@
         // pass reference for JSInvokables
         await JSRuntime.InvokeAsync<object>
     ("createScene", new object[] { DotNetObjectReference.Create(this) });
-        await JSRuntime.InvokeAsync<object>
-            ("createCube", new object[] { });
+        //await JSRuntime.InvokeAsync<object>
+        //    ("createCube", new object[] { });
         await JSRuntime.InvokeAsync<object>
             ("animate", new object[] { });
 

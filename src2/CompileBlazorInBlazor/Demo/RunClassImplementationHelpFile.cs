@@ -1,7 +1,7 @@
 ﻿
 namespace CompileBlazorInBlazor.Demo
 {
-    //public class MyRunClass2 : RunClass2
+    //public class MyRunClass2 : RunClass
     //{
     //    public override void RunCommand(Context context)
     //    {
