@@ -58,19 +58,24 @@ function onDocumentMouseDown(event) {
     mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
     var intersects = raycaster.intersectObjects(scene.children);
-    if (intersects.length > 0) {
 
-        intersects[0].object.callback();
+    if (intersects.length > 0) {
+        intersects.forEach(x => {
+            if (x.object.callback) {
+                x.object.callback();
+            }
+        });
+
     }
 }
 
 function createCube() {
-    var geometry = new THREE.BoxGeometry();
+    var geometry = new THREE.BoxGeometry(10, 10, 10);
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     cube = new THREE.Mesh(geometry, material);
     cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
     scene.add(cube);
-    camera.position.z = 5;
+    //camera.position.z = 5;
 }
 
 function healthy() {
@@ -82,7 +87,16 @@ function unhealthy() {
 }
 
 function clickCube() {
-    cube.material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    cube.material = new THREE.MeshBasicMaterial({ color: getRandomColor() });
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 
