@@ -1,0 +1,74 @@
+﻿@page "/"
+@inject CompileService service
+
+<h1>Compile and Run C# in Browser</h1>
+
+<div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">C# Code</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" @bind="@CsCode"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="Run">Run</button>
+    <div class="card">
+        <div class="card-body">
+            <pre>@ResultText</pre>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <pre>@CompileText</pre>
+        </div>
+    </div>
+</div>
+
+@functions
+{
+    string CsCode { get; set; }
+    string ResultText { get; set; }
+    string CompileText { get; set; }
+
+    public async Task Run()
+    {
+        try
+        {
+            service.CompileLog = new List<string>();
+            ResultText = await service.CompileAndRun(CsCode);
+        }
+        catch (Exception e)
+        {
+            service.CompileLog.Add(e.Message);
+            service.CompileLog.Add(e.StackTrace);
+            throw;
+        }
+        finally
+        {
+            CompileText = string.Join("\r\n", service.CompileLog);
+            this.StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        CsCode = @"
+using System.Text;
+
+namespace CompileBlazorInBlazor.Demo
+{
+    public class RunClass
+    {
+        public string Run(string name, int count)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < count; i++)
+            {
+                sb.AppendLine($""{i}) Hello, {name}!"");
+            }
+
+            return sb.ToString();
+        }
+    }
+}
+";
+    }
+
+}
