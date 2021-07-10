@@ -13,12 +13,13 @@ using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
-
+using Microsoft.JSInterop;
 
 namespace CompileBlazorInBlazor
 {
     public class CompileService
     {
+        public static IJSRuntime JSRuntime;
         private readonly HttpClient _http;
         private readonly NavigationManager _uriHelper;
         public List<string> CompileLog { get; set; }
@@ -173,35 +174,6 @@ namespace CompileBlazorInBlazor
         }
 
 
-//        public class CollectibleAssemblyLoadContext : AssemblyLoadContext
-//        {
-//            public CollectibleAssemblyLoadContext() : base()
-//            {
-//            }
-//
-//
-//            protected override Assembly Load(AssemblyName assemblyName)
-//            {
-//                return null;
-//            }
-//        }
-
-
-        public async Task<string> CompileAndRun(string code, string method)
-        {
-            await Init();
-
-            var assemby = await this.Compile(code);
-            if (assemby != null)
-            {
-                var type = assemby.GetExportedTypes().FirstOrDefault();
-                var methodInfo = type.GetMethod(method);
-                var instance = Activator.CreateInstance(type);
-                return (string) methodInfo.Invoke(instance, new object[] {"my UserName", 12});
-            }
-
-            return null;
-        }
 
         public async Task<Type> CompileOnly(string code)
         {
@@ -223,6 +195,12 @@ namespace CompileBlazorInBlazor
             var instance = Activator.CreateInstance(type);
             if (command.data.Length > 0) return (string)methodInfo.Invoke(instance, command.data);
             else return (string)methodInfo.Invoke(instance, null);
+        }
+
+        public async static Task InvokeJS(string functionName, object[] argumentsObject)
+        {
+            await JSRuntime.InvokeAsync<object>
+            (functionName, argumentsObject);
         }
     }
 
