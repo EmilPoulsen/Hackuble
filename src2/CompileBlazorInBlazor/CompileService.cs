@@ -210,3 +210,32 @@ namespace CompileBlazorInBlazor
         public object[] data { get; set; }
     }
 }
+
+
+////--------------------------------------------------------
+
+//using System.Text;
+//using Microsoft.JSInterop;
+//using System.Threading.Tasks;
+
+//        namespace CompileBlazorInBlazor.Demo
+//{
+//    public class RunClass
+//    {
+//        public string Run(string name)
+//        {
+//            var sb = new StringBuilder();
+//            for (int i = 0; i < 5; i++)
+//            {
+//                sb.AppendLine($"{i}) Hello, {name}!");
+//            }
+
+//            return sb.ToString();
+//        }
+//        public async Task<object> RunB()
+//        {
+//            await CompileService.InvokeJS("clickCube", new object[] { });
+//            return null;
+//        }
+//    }
+//}
