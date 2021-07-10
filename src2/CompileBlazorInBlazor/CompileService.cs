@@ -190,9 +190,9 @@ namespace CompileBlazorInBlazor
             return null;
         }
 
-        public RunClass CreateRunClass(Type type)
+        public AbstractCommand CreateRunClass(Type type)
         {
-            var instance = Activator.CreateInstance(type) as RunClass;
+            var instance = Activator.CreateInstance(type) as AbstractCommand;
             return instance;
         }
 
@@ -225,7 +225,7 @@ namespace CompileBlazorInBlazor
 
         }
 
-        public void RegisterCommand(RunClass runClass)
+        public void RegisterCommand(AbstractCommand runClass)
         {
             _commandService.AddCommand(runClass);
         }

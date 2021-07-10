@@ -8,14 +8,14 @@ namespace CompileBlazorInBlazor
 {
     public class CommandService
     {
-        public List<RunClass> Commands { get; set; }
+        public List<AbstractCommand> Commands { get; set; }
 
         public CommandService()
         {
-            this.Commands = new List<RunClass>();
+            this.Commands = new List<AbstractCommand>();
         }
 
-        public void AddCommand(RunClass command)
+        public void AddCommand(AbstractCommand command)
         {
             this.Commands.Add(command);
         }
