@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using CompileBlazorInBlazor.Demo;
 using Microsoft.AspNetCore.Blazor.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.Language;
@@ -214,6 +214,31 @@ namespace CompileBlazorInBlazor
             }
 
             return null;
+        }
+
+        public string RunCompiled2(Type type, CommandObject command)
+        {
+            System.Diagnostics.Trace.WriteLine($"Here's the type: {type.FullName}");
+
+            if (!typeof(RunClass2).IsAssignableFrom(type))
+            {
+                return "";
+            }
+
+            var instance = Activator.CreateInstance(type) as RunClass2;
+            Context context = new Context();
+
+            instance.RunCommand(context);
+            System.Diagnostics.Trace.WriteLine($"Number of cubes: {context.Cubes.Count}");
+
+
+            return "";
+
+        }
+
+        public void ParseContext(Context context)
+        {
+
         }
 
         public string RunCompiled(Type type, CommandObject command)
