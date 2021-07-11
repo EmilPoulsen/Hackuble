@@ -157,52 +157,52 @@
 
 
 @functions {
-    CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
-    CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
+        CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
+        CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
 
-    void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
-    {
-        //var dataAccess = PresentCommandUserInterface(command);
-        currentDataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
-        currentCommand = command;
-        command.RegisterInputArguments(currentDataAccess);
-
-        if (currentDataAccess.Arguments.Count == 0)
+        void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
         {
-            ProceedRunCommand();
+            //var dataAccess = PresentCommandUserInterface(command);
+            currentDataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
+            currentCommand = command;
+            command.RegisterInputArguments(currentDataAccess);
+
+            if (currentDataAccess.Arguments.Count == 0)
+            {
+                ProceedRunCommand();
+            }
+            else
+            {
+                PresentCommandUserInterface(currentDataAccess);
+            }
+
+
         }
-        else
+
+
+        CompileBlazorInBlazor.Demo.DataAccess PresentCommandUserInterface(CompileBlazorInBlazor.Demo.DataAccess dataAccess)
         {
-            PresentCommandUserInterface(currentDataAccess);
+            System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
+
+            //foreach (var argument in dataAccess.Arguments)
+            //{
+
+            //}
+            LaunchCommandRunner();
+            //foreach (var argument in command.Arguments)
+            //{
+            //    string name = argument.Prompt;
+            //    string description = argument.Prompt;
+
+
+
+            //}
+
+
+            return null;
         }
 
-
-    }
-
-
-    CompileBlazorInBlazor.Demo.DataAccess PresentCommandUserInterface(CompileBlazorInBlazor.Demo.DataAccess dataAccess)
-    {
-        System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
-
-        //foreach (var argument in dataAccess.Arguments)
-        //{
-
-        //}
-        LaunchCommandRunner();
-        //foreach (var argument in command.Arguments)
-        //{
-        //    string name = argument.Prompt;
-        //    string description = argument.Prompt;
-
-
-
-        //}
-
-
-        return null;
-    }
-
-    bool collapseNavMenu = true;
+        bool collapseNavMenu = true;
 
 
 
@@ -367,7 +367,7 @@ namespace CompileBlazorInBlazor.Demo
         ]}
         ";
     }
-        }
+}
 
 
 
