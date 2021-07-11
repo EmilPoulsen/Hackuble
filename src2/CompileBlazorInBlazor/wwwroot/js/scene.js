@@ -76,6 +76,17 @@ function addCube(x, y, z, width, depth, height, color) {
     cube = new THREE.Mesh(geometry, material);
     //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
     scene.add(cube);
+    console.log("Cube Added");
+}
+
+function addSphere(r, u, v, color) {
+    var geometry = new THREE.SphereGeometry(r, u, v);
+    var color1 = new THREE.Color(color);
+    material = new THREE.MeshBasicMaterial({ color: color1 });
+    sphere = new THREE.Mesh(geometry, material);
+    //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
+    scene.add(sphere);
+    console.log("Sphere Added");
 }
 
 function createCube() {

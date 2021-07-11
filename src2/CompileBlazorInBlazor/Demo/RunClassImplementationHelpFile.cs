@@ -1,20 +1,20 @@
-﻿namespace CompileBlazorInBlazor.Demo
+﻿namespace CompileBlazorInBlazor.Demo.Examples
 {
-    public class MyCommand : AbstractCommand
+    public class AddCube : AbstractCommand
     {
-        public override string Name => "Test Command 01";
+        public override string Name => "Add Cube";
 
-        public override string Author => "Hackathon";
+        public override string Author => "Hackathon21";
 
-        public override string Description => "lol";
+        public override string Description => "Add a cuboid to the scene";
 
-        public override string CommandLineName => "test";
+        public override string CommandLineName => "cube";
 
         public override void RegisterInputArguments(DataAccess dataAccess)
         {
-            dataAccess.RegisterNumberArgument("Size X", "The size of the cube in X direction", 20);
-            dataAccess.RegisterNumberArgument("Size Y", "The size of the cube in Y direction", 20);
-            dataAccess.RegisterNumberArgument("Size Z", "The size of the cube in Z direction", 20);
+            dataAccess.RegisterNumberArgument("Size X", "The size of the cube in X direction", 20.0);
+            dataAccess.RegisterNumberArgument("Size Y", "The size of the cube in Y direction", 20.0);
+            dataAccess.RegisterNumberArgument("Size Z", "The size of the cube in Z direction", 20.0);
             dataAccess.RegisterTextArgument("Color", "The color of the cube in Hex Format", "#ff6700");
         }
 
@@ -42,6 +42,52 @@
             }
 
             context.AddCube(x, y, z, 20, 20, 20, c);
+            return CommandStatus.Success;
+        }
+    }
+
+    public class AddSphere : AbstractCommand
+    {
+        public override string Name => "Add Sphere";
+
+        public override string Author => "Hackathon21";
+
+        public override string Description => "Add a sphere to the scene";
+
+        public override string CommandLineName => "sphere";
+
+        public override void RegisterInputArguments(DataAccess dataAccess)
+        {
+            dataAccess.RegisterNumberArgument("Radius", "The size of the sphere in X direction", 20.0);
+            dataAccess.RegisterIntArgument("U", "The size of the sphere in Y direction", 32);
+            dataAccess.RegisterIntArgument("V", "The size of the sphere in Z direction", 32);
+            dataAccess.RegisterTextArgument("Color", "The color of the sphere in Hex Format", "#ff6700");
+        }
+
+        public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
+        {
+            double r = -1;
+            int u = -1;
+            int v = -1;
+            string c = "#ffffff";
+            if (!dataAccess.GetData<double>(0, ref r))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<int>(1, ref u))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<int>(2, ref v))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<string>(3, ref c))
+            {
+                return CommandStatus.Failure;
+            }
+
+            context.AddSphere(r, u, v, c);
             return CommandStatus.Success;
         }
     }

@@ -92,6 +92,18 @@
                                             <input class="form-control" @bind="numArg.CurrentValue" type="number" />
                                         </div>
                                     }
+                                    else if (arg is CompileBlazorInBlazor.Demo.IntegerArgument)
+                                    {
+                                        var intArg = arg as CompileBlazorInBlazor.Demo.IntegerArgument;
+
+                                        <div class="d-flex my-1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">@arg.Prompt</span>
+                                            </div>
+                                            @*<label>@arg.Prompt</label>*@
+                                            <input class="form-control" @bind="intArg.CurrentValue" type="number" />
+                                        </div>
+                                    }
                                     else if (arg is CompileBlazorInBlazor.Demo.TextArgument)
                                     {
                                         var textArg = arg as CompileBlazorInBlazor.Demo.TextArgument;

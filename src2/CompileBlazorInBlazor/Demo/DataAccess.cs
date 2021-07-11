@@ -18,6 +18,11 @@ namespace CompileBlazorInBlazor.Demo
             this.Arguments.Add(new NumberArgument(name, description, defaultValue));
         }
 
+        public void RegisterIntArgument(string name, string description, int defaultValue)
+        {
+            this.Arguments.Add(new IntegerArgument(name, description, defaultValue));
+        }
+
         public void RegisterTextArgument(string name, string description, string defaultValue)
         {
             this.Arguments.Add(new TextArgument(name, description, defaultValue));

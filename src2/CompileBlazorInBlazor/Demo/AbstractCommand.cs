@@ -85,6 +85,21 @@ namespace CompileBlazorInBlazor.Demo
         }
     }
 
+    public class IntegerArgument : AbstractArgument<int>
+    {
+
+        public IntegerArgument(string prompt, string description, int defaultValue)
+            : base(prompt, description, defaultValue)
+        {
+
+        }
+
+        public override void RenderArgumentInput()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class TextArgument : AbstractArgument<string>
     {
 

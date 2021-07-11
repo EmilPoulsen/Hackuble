@@ -45,6 +45,10 @@ namespace CompileBlazorInBlazor
             {
                 await CommandService.InvokeJS("addCube", new object[] { cube.X, cube.Y, cube.Z, cube.Width, cube.Depth, cube.Height, cube.Material });
             }
+            foreach (var sphere in context.Spheres)
+            {
+                await CommandService.InvokeJS("addSphere", new object[] { sphere.Radius, sphere.U, sphere.V, sphere.Material });
+            }
 
             //await CompileService.InvokeJS("clickCube", new object[] { });
         }
