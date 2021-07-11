@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompileBlazorInBlazor", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackuble.Core", "Hackuble.Core\Hackuble.Core.csproj", "{40B9CE8E-1138-4A4B-A339-6E9E3E12CB22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackuble.Examples", "Hackuble.Examples\Hackuble.Examples.csproj", "{304B2735-B52D-4CDD-B819-507DAD9D6068}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackuble.Examples", "Hackuble.Examples\Hackuble.Examples.csproj", "{304B2735-B52D-4CDD-B819-507DAD9D6068}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
