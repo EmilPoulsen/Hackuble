@@ -56,7 +56,7 @@
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
         <!-- Button trigger modal -->
         <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">Create New Command</button>
-        <InputFile OnChange="@LoadFiles" multiple />
+        <InputFile OnChange="HandleSelection" />
     </div>
 
 
@@ -200,9 +200,20 @@
 
 
 @functions {
-    private void LoadFiles(InputFileChangeEventArgs e)
+    string status;
+
+    async Task HandleSelection(IFileListEntry[] files)
     {
-        
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            // Just load into .NET memory to show it can be done
+            // Alternatively it could be saved to disk, or parsed in memory, or similar
+            var ms = new System.IO.MemoryStream();
+            await file.Data.CopyToAsync(ms);
+
+            status = $"Finished loading {file.Size} bytes from {file.Name}";
+        }
     }
 
     CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
