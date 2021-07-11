@@ -75,7 +75,42 @@
 
     @*<CompileBlazorInBlazor.Component.CommandModal @ref="Modal"></CompileBlazorInBlazor.Component.CommandModal>*@
 
+    <div class="modal @ModalClass overflow-auto" tabindex="-1" role="dialog" style="display:@CommandModalDisplay;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body overflow-auto" style="height: 550px">
+                    <label for="command">Command Arguments</label>
+                    @{ 
+                        if (currentDataAccess != null)
+                        {
+                            foreach (var arg in currentDataAccess.Arguments)
+                            {
+                                if (arg is CompileBlazorInBlazor.Demo.NumberArgument)
+                                {
+                                    var numArg = arg as CompileBlazorInBlazor.Demo.NumberArgument;
 
+                                    <div class="d-flex">
+                                         <label>@arg.Prompt</label>
+                                        <input @bind="numArg.CurrentValue" type="number"/>
+                                    </div>
+                                    }
+                                }
+                            }
+                        }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => CloseCommandModal()">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="() => ProceedRunCommand()">Run</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="modal @ModalClass overflow-auto" tabindex="-1" role="dialog" style="display:@ModalDisplay;">
@@ -144,20 +179,62 @@
 
 
 @functions {
+        CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
+        CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
 
-    void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
-    {
-        System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
-    }
+        void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
+        {
+            //var dataAccess = PresentCommandUserInterface(command);
+            currentDataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
+            currentCommand = command;
+            command.RegisterInputArguments(currentDataAccess);
 
-    bool collapseNavMenu = true;
+            if (currentDataAccess.Arguments.Count == 0)
+            {
+                ProceedRunCommand();
+            }
+            else
+            {
+                PresentCommandUserInterface(currentDataAccess);
+            }
+
+
+        }
+
+
+        CompileBlazorInBlazor.Demo.DataAccess PresentCommandUserInterface(CompileBlazorInBlazor.Demo.DataAccess dataAccess)
+        {
+            System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
+
+            //foreach (var argument in dataAccess.Arguments)
+            //{
+
+            //}
+            LaunchCommandRunner();
+            //foreach (var argument in command.Arguments)
+            //{
+            //    string name = argument.Prompt;
+            //    string description = argument.Prompt;
+
+
+
+            //}
+
+
+            return null;
+        }
+
+        bool collapseNavMenu = true;
 
 
 
     public Guid Guid = Guid.NewGuid();
     public string ModalDisplay = "none;";
     string LoadingBarDisplay = "none;";
+    public string CommandModalDisplay = "none;";
+
     public string ModalClass = "";
+    public string CommandModalClass = "";
     public bool ShowBackdrop = false;
 
     string CsCode { get; set; }
@@ -188,6 +265,36 @@
         StateHasChanged();
     }
 
+    public void LaunchCommandRunner()
+    {
+        CommandModalDisplay = "block;";
+        CommandModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void CloseCommandModal()
+    {
+        CommandModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    public void ProceedRunCommand()
+    {
+        CompileBlazorInBlazor.Demo.Context context = new CompileBlazorInBlazor.Demo.Context();
+        var command = currentCommand;
+        var dataAccess = currentDataAccess;
+
+        commandService.RunCommand(command, context, dataAccess);
+
+        //System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
+        CloseCommandModal();
+
+        currentCommand = null;
+        currentDataAccess = null;
+    }
 
     public async Task Compile()
     {
@@ -223,7 +330,8 @@
             if (!string.IsNullOrEmpty(CommandJSON))
             {
                 commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
-                ResultText = service.RunCompiled(CompiledType, commandObject);
+                //ResultText = service.RunCompiled(CompiledType, commandObject);
+                ResultText = "";
             }
             else throw new Exception("No Command");
         }
@@ -243,38 +351,56 @@
     protected override void OnInitialized()
     {
         CsCode = @"
-
-
-    namespace CompileBlazorInBlazor.Demo
-    {
+namespace CompileBlazorInBlazor.Demo
+{
     public class MyCommand : AbstractCommand
     {
-    public override string Name => ""Test Command 01"";
+        public override string Name => ""Test Command 01"";
 
-    public override string Author => ""Hackathon"";
+        public override string Author => ""Hackathon"";
 
-    public override string Description => ""lol"";
+        public override string Description => ""lol"";
 
-    public override string CommandLineName => ""test"";
+        public override string CommandLineName => ""test"";
 
-    public override void RegisterInputArguments()
-    {
-        //nothing yet
+        public override void RegisterInputArguments(DataAccess dataAccess)
+        {
+            dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20);
+            dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20);
+            dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20);
+        }
+
+        public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
+        {
+            double x = -1;
+            double y = -1;
+            double z = -1;
+            if (!dataAccess.GetData<double>(0, ref x))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<double>(1, ref y))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<double>(2, ref z))
+            {
+                return CommandStatus.Failure;
+            }
+
+            context.AddCube(x, y, z, 20, 20, 20);
+            return CommandStatus.Success;
+        }
     }
-
-    public override void RunCommand(Context context)
-    {
-        context.AddCube(20, 20, 20, 20, 20, 20);
-    }
-    }
-    }";
+}
+";
 
         CommandJSON = @"
-    {""command"":"""",
-    ""data"":[
+        {""command"":"""",
+        ""data"":[
 
-    ]}
-    ";
+        ]}
+        ";
     }
 }
 

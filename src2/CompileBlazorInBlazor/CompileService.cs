@@ -19,7 +19,6 @@ namespace CompileBlazorInBlazor
 {
     public class CompileService
     {
-        public static IJSRuntime JSRuntime;
         private readonly HttpClient _http;
         private readonly NavigationManager _uriHelper;
         public List<string> CompileLog { get; set; }
@@ -214,37 +213,13 @@ namespace CompileBlazorInBlazor
             }
 
             var instance = Activator.CreateInstance(type) as AbstractCommand;
+
             Context context = new Context();
 
-            instance.RunCommand(context);
-            System.Diagnostics.Trace.WriteLine($"Number of cubes: {context.Cubes.Count}");
-
-            ParseContext(context);
+            _commandService.RunCommand(instance, context, null);
 
             return "";
 
-        }
-
-        public void RegisterCommand(AbstractCommand runClass)
-        {
-            _commandService.AddCommand(runClass);
-        }
-
-        public async void ParseContext(Context context)
-        {
-
-            foreach (var cube in context.Cubes)
-            {
-                await CompileService.InvokeJS("addCube", new object[] { cube.X, cube.Y, cube.Z, cube.Width, cube.Depth, cube.Height });
-            }
-
-            //await CompileService.InvokeJS("clickCube", new object[] { });
-        }
-
-        public async static Task InvokeJS(string functionName, object[] argumentsObject)
-        {
-            await JSRuntime.InvokeAsync<object>
-            (functionName, argumentsObject);
         }
     }
 
