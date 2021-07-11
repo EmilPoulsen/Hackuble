@@ -98,6 +98,23 @@ function clickCube() {
     cube.material = new THREE.MeshBasicMaterial({ color: getRandomColor() });
 }
 
+function clearScene() {
+
+    var tempList = [];
+    for (var i = 0; i < scene.children.length; i++) {
+        var child = scene.children[i];
+        tempList.push(child);
+    }
+
+    for (var i = 0; i < tempList.length; i++) {
+        var currObj = tempList[i];
+
+        if (currObj.name != "GridHelper") {
+            scene.remove(currObj);
+        }
+    }
+}
+
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
