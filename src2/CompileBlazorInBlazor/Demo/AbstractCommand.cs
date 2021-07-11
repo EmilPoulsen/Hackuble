@@ -6,32 +6,65 @@ namespace CompileBlazorInBlazor.Demo
 {
     public abstract class AbstractCommand
     {
-        private List<IAbstractArgument> Arguments { get; set; }
+        public AbstractCommand()
+        {
+            //this.Arguments = new List<IAbstractArgument>();
+        }
+
         public abstract string Name { get; }
         public abstract string Author { get; }
         public abstract string Description { get; }
         //public abstract System.Drawing.Color Accent { get; }
-        public abstract void RegisterInputArguments();
+        public abstract void RegisterInputArguments(DataAccess dataAccess);
         public abstract string CommandLineName { get; }
-        public abstract void RunCommand(Context context);
+        public abstract CommandStatus RunCommand(Context context, DataAccess dataAccess);
 
         public int RequestArgument(Type T, string prompt, string description)
         {
             //this.Arguments.Add(new AbstractArgument<T>());
-            return (this.Arguments.Count - 1);
+            //return (this.Arguments.Count - 1);
+            return -1;
         }
     }
 
     public abstract class AbstractArgument<T> : IAbstractArgument
     {
-        public abstract string Prompt { get; set; }
-        public abstract string Description { get; set; }
+        public AbstractArgument(string prompt, string description, T defaultValue)
+        {
+            this.Prompt = prompt;
+            this.Description = description;
+            this.DefaultValue = defaultValue;
+        }
+
+        public T DefaultValue { get; set; }
+        public string Prompt { get; set; }
+        public string Description { get; set; }
+
+        public object DefaultValueUntyped => this.DefaultValue;
+
         public abstract void RenderArgumentInput();
     }
 
     public interface IAbstractArgument
     {
-        public abstract string Prompt { get; set; }
-        public abstract string Description { get; set; }
+        public string Prompt { get; set; }
+        public string Description { get; set; }
+
+        public object DefaultValueUntyped { get; }
+    }
+
+    public class NumberArgument : AbstractArgument<double>
+    {
+
+        public NumberArgument(string prompt, string description, double defaultValue)
+            :base(prompt, description, defaultValue)
+        {
+
+        }
+
+        public override void RenderArgumentInput()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
