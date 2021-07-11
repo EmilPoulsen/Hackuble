@@ -56,7 +56,7 @@
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
         <!-- Button trigger modal -->
         <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">Create New Command</button>
-        <InputFile OnChange="HandleSelection" />
+        <InputFile class="btn btn-primary mx-auto" OnChange="HandleSelection" />
     </div>
 
 
@@ -204,6 +204,8 @@
 
     async Task HandleSelection(IFileListEntry[] files)
     {
+        System.Diagnostics.Trace.WriteLine("HandleSelection called!");
+
         var file = files.FirstOrDefault();
         if (file != null)
         {
@@ -213,6 +215,7 @@
             await file.Data.CopyToAsync(ms);
 
             status = $"Finished loading {file.Size} bytes from {file.Name}";
+            System.Diagnostics.Trace.WriteLine(status);
         }
     }
 
