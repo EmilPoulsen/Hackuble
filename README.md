@@ -15,3 +15,5 @@ git clone https://github.com/EmilPoulsen/AecHackBlazor.git
 3. Debugging
 4. Heare you go!
 
+## Sample
+![](https://github.com/EmilPoulsen/AecHackBlazor/blob/main/gifs/demo-gif-01.gif)
