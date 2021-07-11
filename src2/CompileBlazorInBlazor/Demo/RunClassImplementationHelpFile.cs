@@ -20,12 +20,22 @@
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
         {
             double x = -1;
+            double y = -1;
+            double z = -1;
             if (!dataAccess.GetData<double>(0, ref x))
             {
                 return CommandStatus.Failure;
             }
+            if (!dataAccess.GetData<double>(1, ref y))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<double>(2, ref z))
+            {
+                return CommandStatus.Failure;
+            }
 
-            context.AddCube(x, 20, 20, 20, 20, 20);
+            context.AddCube(x, y, z, 20, 20, 20);
             return CommandStatus.Success;
         }
     }
