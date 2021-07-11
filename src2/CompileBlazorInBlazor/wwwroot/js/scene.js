@@ -69,12 +69,13 @@ function onDocumentMouseDown(event) {
     }
 }
 
-function addCube(x, y, z, width, depth, height, color) {
+function addCube(x, y, z, locX, locY, locZ, color) {
     var geometry = new THREE.BoxGeometry(x, y, z);
     var color1 = new THREE.Color(color);
     material = new THREE.MeshBasicMaterial({ color: color1 });
     cube = new THREE.Mesh(geometry, material);
     //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
+    cube.position.set(locX, locY, locZ);
     scene.add(cube);
     console.log("Cube Added");
 }

@@ -43,7 +43,7 @@
                 return CommandStatus.Failure;
             }
 
-            context.AddCube(x, y, z, 20, 20, 20, c);
+            context.AddCube(x, y, z, 0, 0, 0, c);
             return CommandStatus.Success;
         }
     }
@@ -73,7 +73,7 @@
                 return CommandStatus.Failure;
             }
 
-            context.AddCube(20.0, 20.0, 20.0, 20, 20, 20, c);
+            context.AddCube(20.0, 20.0, 20.0, 0, 0, 0, c);
             return CommandStatus.Success;
         }
     }
@@ -129,6 +129,27 @@
 
             context.AddSphere(r, u, v, c);
             return CommandStatus.Success;
+        }
+    }
+
+    public class CreateBuilding : AbstractCommand
+    {
+        public override string Name => "Create building";
+
+        public override string Author => "Emil Poulsen";
+
+        public override string Description => "Add a building to the scene";
+
+        public override string CommandLineName => "addbuilding";
+
+        public override string Accent => "#D4C966";
+
+        public override void RegisterInputArguments(DataAccess dataAccess)
+        {
+            dataAccess.RegisterNumberArgument("BaseX", "Base X dimension", 20);
+            dataAccess.RegisterNumberArgument("BaseY", "Base X dimension", 20);
+            dataAccess.RegisterNumberArgument("Fl-Fl", "Floor to floor", 3);
+            dataAccess.RegisterIntArgument("NumFloors ", "Number of floors", 3);
         }
     }
 }
