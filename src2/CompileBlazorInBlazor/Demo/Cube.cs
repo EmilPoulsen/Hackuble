@@ -13,8 +13,9 @@ namespace CompileBlazorInBlazor.Demo
         public double Width { get; set; }
         public double Depth { get; set; }
         public double Height { get; set; }
+        public string Material { get; set; }
 
-        public Cube(double x, double y, double z, double width, double depth, double height)
+        public Cube(double x, double y, double z, double width, double depth, double height, string color)
         {
             this.X = x;
             this.Y = y;
@@ -22,6 +23,7 @@ namespace CompileBlazorInBlazor.Demo
             this.Width = width;
             this.Depth = depth;
             this.Height = height;
+            this.Material = color;
         }
     }
 }

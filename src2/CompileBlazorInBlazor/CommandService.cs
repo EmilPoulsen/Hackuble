@@ -43,7 +43,7 @@ namespace CompileBlazorInBlazor
 
             foreach (var cube in context.Cubes)
             {
-                await CommandService.InvokeJS("addCube", new object[] { cube.X, cube.Y, cube.Z, cube.Width, cube.Depth, cube.Height });
+                await CommandService.InvokeJS("addCube", new object[] { cube.X, cube.Y, cube.Z, cube.Width, cube.Depth, cube.Height, cube.Material });
             }
 
             //await CompileService.InvokeJS("clickCube", new object[] { });

@@ -92,6 +92,18 @@
                                             <input class="form-control" @bind="numArg.CurrentValue" type="number" />
                                         </div>
                                     }
+                                    else if (arg is CompileBlazorInBlazor.Demo.TextArgument)
+                                    {
+                                        var textArg = arg as CompileBlazorInBlazor.Demo.TextArgument;
+
+                                        <div class="d-flex my-1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">@arg.Prompt</span>
+                                            </div>
+                                            @*<label>@arg.Prompt</label>*@
+                                            <input class="form-control" @bind="textArg.CurrentValue" type="text" />
+                                        </div>
+                                    }
                                 }
                             }
                         }
@@ -111,13 +123,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Run command</h5>
+                    <h5 class="modal-title">Create New Command</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => Close()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <div class="modal-body overflow-auto" style="height: 550px">
+                <div class="modal-body overflow-auto" style="height: 80%;">
                     @*<p>Modal body text goes here.</p>*@
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">C# Code</label>
@@ -345,10 +357,9 @@
 
     protected override void OnInitialized()
     {
-        CsCode = @"
-namespace CompileBlazorInBlazor.Demo
+        CsCode = @"namespace CompileBlazorInBlazor.Demo
 {
-    public class MyCommand : AbstractCommand
+    public class MyCommandExample : AbstractCommand
     {
         public override string Name => ""Test Command 01"";
 
@@ -363,6 +374,7 @@ namespace CompileBlazorInBlazor.Demo
             dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20);
             dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20);
             dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20);
+            dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex format"", ""#ff6700"");
         }
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
@@ -370,6 +382,7 @@ namespace CompileBlazorInBlazor.Demo
             double x = -1;
             double y = -1;
             double z = -1;
+            string c = ""#ffffff"";
             if (!dataAccess.GetData<double>(0, ref x))
             {
                 return CommandStatus.Failure;
@@ -382,20 +395,23 @@ namespace CompileBlazorInBlazor.Demo
             {
                 return CommandStatus.Failure;
             }
+            if (!dataAccess.GetData<string>(3, ref c))
+            {
+                return CommandStatus.Failure;
+            }
 
-            context.AddCube(x, y, z, 20, 20, 20);
+            context.AddCube(x, y, z, 20, 20, 20, c);
             return CommandStatus.Success;
         }
     }
 }
 ";
 
-        CommandJSON = @"
-        {""command"":"""",
-        ""data"":[
-
-        ]}
-        ";
+        CommandJSON = @"{""command"":"""",
+""data"":[
+    
+]}
+";
     }
 }
 

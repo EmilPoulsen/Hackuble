@@ -18,6 +18,11 @@ namespace CompileBlazorInBlazor.Demo
             this.Arguments.Add(new NumberArgument(name, description, defaultValue));
         }
 
+        public void RegisterTextArgument(string name, string description, string defaultValue)
+        {
+            this.Arguments.Add(new TextArgument(name, description, defaultValue));
+        }
+
         public bool GetData<T>(int index, ref T data)
         {
             if (index < this.Arguments.Count)

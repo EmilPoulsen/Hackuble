@@ -13,9 +13,9 @@ namespace CompileBlazorInBlazor.Demo
             this.Cubes = new List<Cube>();
         }
 
-        public void AddCube(double x, double y, double z, double width, double depth, double height)
+        public void AddCube(double x, double y, double z, double width, double depth, double height, string color)
         {
-            Cube cube = new Cube(x, y, z, width, depth, height);
+            Cube cube = new Cube(x, y, z, width, depth, height, color);
             this.Cubes.Add(cube);
         }
     }

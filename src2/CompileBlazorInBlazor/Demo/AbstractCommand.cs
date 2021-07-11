@@ -84,4 +84,19 @@ namespace CompileBlazorInBlazor.Demo
             throw new NotImplementedException();
         }
     }
+
+    public class TextArgument : AbstractArgument<string>
+    {
+
+        public TextArgument(string prompt, string description, string defaultValue)
+            : base(prompt, description, defaultValue)
+        {
+
+        }
+
+        public override void RenderArgumentInput()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
