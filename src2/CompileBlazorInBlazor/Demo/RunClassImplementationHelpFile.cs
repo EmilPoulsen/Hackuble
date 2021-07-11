@@ -12,9 +12,9 @@
 
         public override void RegisterInputArguments(DataAccess dataAccess)
         {
-            //dataAccess.RegisterNumberArgument("Size X", "The size of the cube in X direction", 20);
-            //dataAccess.RegisterNumberArgument("Size Y", "The size of the cube in Y direction", 20);
-            //dataAccess.RegisterNumberArgument("Size Z", "The size of the cube in Z direction", 20);
+            dataAccess.RegisterNumberArgument("Size X", "The size of the cube in X direction", 20);
+            dataAccess.RegisterNumberArgument("Size Y", "The size of the cube in Y direction", 20);
+            dataAccess.RegisterNumberArgument("Size Z", "The size of the cube in Z direction", 20);
         }
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
