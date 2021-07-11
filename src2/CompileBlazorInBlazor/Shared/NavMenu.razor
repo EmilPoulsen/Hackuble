@@ -268,37 +268,35 @@ public void Run()
 protected override void OnInitialized()
 {
     CsCode = @"
-
-
 namespace CompileBlazorInBlazor.Demo
 {
-public class MyCommand : AbstractCommand
-{
-public override string Name => ""Test Command 01"";
+    public class MyCommand : AbstractCommand
+    {
+        public override string Name => ""Test Command 01"";
 
-public override string Author => ""Hackathon"";
+        public override string Author => ""Hackathon"";
 
-public override string Description => ""lol"";
+        public override string Description => ""lol"";
 
-public override string CommandLineName => ""test"";
+        public override string CommandLineName => ""test"";
 
-public override void RegisterInputArguments(DataAccess dataAccess)
-{
+        public override void RegisterInputArguments(DataAccess dataAccess)
+        {
 
-}
+        }
 
-public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
-{
-    //double d = -1;
-    //if(!dataAccess.GetData<double>(0, ref d))
-    //{
-    //    return CommandStatus.Failure;
-    //}
+        public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
+        {
+            //double d = -1;
+            //if(!dataAccess.GetData<double>(0, ref d))
+            //{
+            //    return CommandStatus.Failure;
+            //}
 
-    context.AddCube(20, 20, 20, 20, 20, 20);
-    return CommandStatus.Success;
-}
-}
+            context.AddCube(20, 20, 20, 20, 20, 20);
+            return CommandStatus.Success;
+        }
+    }
 }
 ";
 
