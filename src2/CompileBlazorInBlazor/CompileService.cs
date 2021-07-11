@@ -24,12 +24,14 @@ namespace CompileBlazorInBlazor
         private readonly NavigationManager _uriHelper;
         public List<string> CompileLog { get; set; }
         private List<MetadataReference> references { get; set; }
+        private CommandService _commandService;
 
 
-        public CompileService(HttpClient http, NavigationManager uriHelper)
+        public CompileService(HttpClient http, NavigationManager uriHelper, CommandService commandService)
         {
             _http = http;
             _uriHelper = uriHelper;
+            _commandService = commandService;
         }
 
         public async Task Init()
@@ -188,6 +190,14 @@ namespace CompileBlazorInBlazor
             return null;
         }
 
+        public AbstractCommand CreateRunClass(Type type)
+        {
+            var instance = Activator.CreateInstance(type) as AbstractCommand;
+            return instance;
+        }
+
+
+
         public string RunCompiled(Type type, CommandObject command)
         {
             //if (string.IsNullOrEmpty(command.command)) return null;
@@ -198,12 +208,12 @@ namespace CompileBlazorInBlazor
 
             System.Diagnostics.Trace.WriteLine($"Here's the type: {type.FullName}");
 
-            if (!typeof(RunClass).IsAssignableFrom(type))
+            if (!typeof(AbstractCommand).IsAssignableFrom(type))
             {
                 return "";
             }
 
-            var instance = Activator.CreateInstance(type) as RunClass;
+            var instance = Activator.CreateInstance(type) as AbstractCommand;
             Context context = new Context();
 
             instance.RunCommand(context);
@@ -213,6 +223,11 @@ namespace CompileBlazorInBlazor
 
             return "";
 
+        }
+
+        public void RegisterCommand(AbstractCommand runClass)
+        {
+            _commandService.AddCommand(runClass);
         }
 
         public async void ParseContext(Context context)

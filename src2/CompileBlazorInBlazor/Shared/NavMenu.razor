@@ -1,4 +1,5 @@
 ﻿@inject CompileService service
+@inject CommandService commandService
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">CompileBlazorInBlazor</a>
@@ -6,6 +7,8 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
+
+<p>@commandService.GetSummary()</p>
 
 <div class=@(collapseNavMenu ? "collapse" : null) @onclick=@ToggleNavMenu>
     @*<ul class="nav flex-column">
@@ -28,6 +31,22 @@
 
     <div class="mt-5" style="height:60vh">
         <div class="px-3" id="commandContainer">
+
+            <ul>
+
+                @{
+                    foreach (var command in commandService.Commands)
+                    {
+                        <li>
+                            @*<button @onclick="(command) => { RunCommand };">Command</button>*@
+                            <button @onclick="@(e => RunCommand(command))">Check</button>
+                        </li>
+                    }
+                }
+            </ul>
+
+
+
             @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
             <!-- Button trigger modal -->
             @*<button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">New Command</button>*@
@@ -42,7 +61,7 @@
         </div>
     </div>
 
-    
+
 
     <div class="d-flex mt-5">
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
@@ -63,7 +82,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Script Editor</h5>
+                    <h5 class="modal-title">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -72,24 +91,38 @@
                 <div class="modal-body overflow-auto" style="height: 550px">
                     @*<p>Modal body text goes here.</p>*@
                     <div class="form-group">
-                        <b for="exampleFormControlTextarea1">C# Code</b>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" @bind="@CsCode"></textarea>
+                        <label for="exampleFormControlTextarea1">C# Code</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="@CsCode"></textarea>
                     </div>
                     <button type="button" class="btn btn-primary" @onclick="Compile">Compile</button><br />
                     <textarea class="form-control mt-2" rows="1" id="comileText" @bind="@CompileText" style="background-color: #f0f0f0"></textarea>
-                    
+
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%;display:@LoadingBarDisplay"></div>
                     </div>
+
+
                     <hr>
 
 
-                    <b for="command">Command</b>
+                    <label for="command">Command</label>
                     <textarea class="form-control" id="command" rows="3" @bind="@CommandJSON"></textarea>
-                    <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
-                    @*<pre class="overflow-auto" style="height: 50px; white-space: pre-wrap; ">@ResultText</pre>*@
-                    <textarea class="form-control mt-2" rows="1" id="retultText" @bind="@ResultText" style="background-color: #f0f0f0"></textarea>
 
+                    <hr>
+                    <button type="button" class="btn btn-primary" @onclick="Run">Run</button><br />
+                    <pre class="overflow-auto" style="height:50px">@ResultText</pre>
+
+
+                    @*<div class="card">
+                            <div class="card-body p-0">
+                                <pre class="overflow-auto" style="height:50px">@ResultText</pre>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre>@CompileText</pre>
+                            </div>
+                        </div>*@
 
                 </div>
                 <div class="modal-footer">
@@ -111,6 +144,11 @@
 
 
 @functions {
+
+    void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
+    {
+        System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
+    }
 
     bool collapseNavMenu = true;
 
@@ -179,16 +217,15 @@
         if (CompiledType == null) return;
         try
         {
+            var instance = service.CreateRunClass(CompiledType);
+            commandService.AddCommand(instance);
             CommandObject commandObject;
             if (!string.IsNullOrEmpty(CommandJSON))
             {
                 commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
                 ResultText = service.RunCompiled(CompiledType, commandObject);
             }
-            else
-            {
-                throw new Exception("No Command");
-            }
+            else throw new Exception("No Command");
         }
         catch (Exception e)
         {
@@ -206,22 +243,42 @@
     protected override void OnInitialized()
     {
         CsCode = @"
-        namespace CompileBlazorInBlazor.Demo
-        {
-            public class MyRunClass : RunClass
-            {
-                public override void RunCommand(Context context)
-                {
-                    context.AddCube(20, 20, 20, 20, 20, 20);
-                }
-            }
-        }
-        ";
+
+
+    namespace CompileBlazorInBlazor.Demo
+    {
+    public class MyCommand : AbstractCommand
+    {
+    public override string Name => ""Test Command 01"";
+
+    public override string Author => ""Hackathon"";
+
+    public override string Description => ""lol"";
+
+    public override string CommandLineName => ""test"";
+
+    public override void RegisterInputArguments()
+    {
+        //nothing yet
+    }
+
+    public override void RunCommand(Context context)
+    {
+        context.AddCube(20, 20, 20, 20, 20, 20);
+    }
+    }
+    }";
+
         CommandJSON = @"
-        {""command"":"""",
-        ""data"":[
-        
-        ]}
-        ";
+    {""command"":"""",
+    ""data"":[
+
+    ]}
+    ";
     }
 }
+
+
+
+
+        @*public override Color Accent => Color.OrangeRed;*@
