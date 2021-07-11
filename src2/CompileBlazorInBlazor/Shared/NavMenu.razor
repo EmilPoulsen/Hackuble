@@ -17,7 +17,7 @@
 
 <div class="alert alert-info d-flex justify-content-between" role="alert">
     <span>Commands</span>
-    <span style="cursor:pointer">clear</span>
+    <span style="cursor:pointer" @onclick=@ClearExistingCommands>clear</span>
 </div>
 
 @*<p>@commandService.GetSummary()</p>*@
@@ -254,6 +254,12 @@
         }
 
 
+    }
+
+    void ClearExistingCommands()
+    {
+        commandService.Commands.Clear();
+        StateHasChanged();
     }
 
 
