@@ -131,25 +131,4 @@
             return CommandStatus.Success;
         }
     }
-
-    public class CreateBuilding : AbstractCommand
-    {
-        public override string Name => "Create building";
-
-        public override string Author => "Emil Poulsen";
-
-        public override string Description => "Add a building to the scene";
-
-        public override string CommandLineName => "addbuilding";
-
-        public override string Accent => "#D4C966";
-
-        public override void RegisterInputArguments(DataAccess dataAccess)
-        {
-            dataAccess.RegisterNumberArgument("BaseX", "Base X dimension", 20);
-            dataAccess.RegisterNumberArgument("BaseY", "Base X dimension", 20);
-            dataAccess.RegisterNumberArgument("Fl-Fl", "Floor to floor", 3);
-            dataAccess.RegisterIntArgument("NumFloors ", "Number of floors", 3);
-        }
-    }
 }
