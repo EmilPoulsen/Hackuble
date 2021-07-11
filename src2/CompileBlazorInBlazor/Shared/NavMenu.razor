@@ -216,6 +216,21 @@
 
             status = $"Finished loading {file.Size} bytes from {file.Name}";
             System.Diagnostics.Trace.WriteLine(status);
+
+            var assembly = System.Reflection.Assembly.Load(ms.ToArray());
+            System.Diagnostics.Trace.WriteLine(assembly.FullName);
+
+            foreach (var type in assembly.GetTypes())
+            {
+                System.Diagnostics.Trace.WriteLine(type.FullName);
+
+                if (typeof(CompileBlazorInBlazor.Demo.AbstractCommand).IsAssignableFrom(type))
+                {
+                    System.Diagnostics.Trace.WriteLine($"Loading {type.FullName}");
+                    var command = service.CreateRunClass(type);
+                    commandService.AddCommand(command);
+                }
+            }
         }
     }
 
