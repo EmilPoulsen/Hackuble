@@ -56,7 +56,7 @@
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
         <!-- Button trigger modal -->
         <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">Create New Command</button>
-
+        <InputFile OnChange="@LoadFiles" multiple />
     </div>
 
 
@@ -200,6 +200,11 @@
 
 
 @functions {
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        
+    }
+
     CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
     CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
 
