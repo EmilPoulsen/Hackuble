@@ -35,12 +35,27 @@ namespace CompileBlazorInBlazor.Demo
             this.Description = description;
             this.DefaultValue = defaultValue;
         }
+        public T CurrentValue { get; set; }
 
         public T DefaultValue { get; set; }
         public string Prompt { get; set; }
         public string Description { get; set; }
 
         public object DefaultValueUntyped => this.DefaultValue;
+
+        public bool GetData<T1>(ref T1 data)
+        {
+            if (typeof(T1) == typeof(T))
+            {
+                var temoObj = (object)this.CurrentValue;
+                data = (T1)temoObj;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public abstract void RenderArgumentInput();
     }
@@ -51,6 +66,8 @@ namespace CompileBlazorInBlazor.Demo
         public string Description { get; set; }
 
         public object DefaultValueUntyped { get; }
+
+        bool GetData<T>(ref T data);
     }
 
     public class NumberArgument : AbstractArgument<double>

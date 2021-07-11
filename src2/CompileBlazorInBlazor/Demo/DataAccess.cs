@@ -20,9 +20,22 @@ namespace CompileBlazorInBlazor.Demo
 
         public bool GetData<T>(int index, ref T data)
         {
-            data = default(T);
-            return true;
-            //return default(T);
+            if (index < this.Arguments.Count)
+            {
+                var arg = this.Arguments[index];
+                if (arg.GetData<T>(ref data))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
