@@ -56,7 +56,7 @@
     <div class="d-flex mt-5">
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
         <!-- Button trigger modal -->
-        <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">Create New Command</button>
+        <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">New Command</button>
         <InputFile class="btn btn-primary mx-auto" OnChange="HandleSelection" />
     </div>
 
@@ -111,7 +111,7 @@
                                         var textArg = arg as CompileBlazorInBlazor.Demo.TextArgument;
 
                                         <div class="d-flex my-1">
-                                            <div class="input-group-prepend">
+                                            <div class="input-group-prepend" style="min-width:50px">
                                                 <span class="input-group-text">@arg.Prompt</span>
                                             </div>
                                             @*<label>@arg.Prompt</label>*@
