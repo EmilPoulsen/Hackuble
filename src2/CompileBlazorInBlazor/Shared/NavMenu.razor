@@ -216,7 +216,23 @@
 
             status = $"Finished loading {file.Size} bytes from {file.Name}";
             System.Diagnostics.Trace.WriteLine(status);
+
+            try
+            {
+                System.Diagnostics.Trace.WriteLine("trying to load assembly");
+                var assem = LoadAssembly(ms);
+                System.Diagnostics.Trace.WriteLine(assem.FullName);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.WriteLine(e.Message);
+            }
         }
+    }
+
+    protected virtual System.Reflection.Assembly LoadAssembly(MemoryStream peStream)
+    {
+        return System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromStream(peStream);
     }
 
     CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
