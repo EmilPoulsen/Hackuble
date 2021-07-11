@@ -7,7 +7,7 @@
 <div class="top-row pl-4 mt-2 navbar navbar-dark">
     <h5>
         <img src="https://raw.githubusercontent.com/EmilPoulsen/AecHackBlazor/main/src2/CompileBlazorInBlazor/wwwroot/icon.png" width="30" height="30" alt="" style="filter: invert(1);">
-        <a class="navbar-brand ml-2" href="">Hakc#ble</a>
+        <a class="navbar-brand ml-2" href="">Hakc#uble</a>
     </h5>
     <button class="navbar-toggler" @onclick=@ToggleNavMenu>
         <span class="navbar-toggler-icon"></span>
@@ -15,8 +15,9 @@
 </div>
 
 
-<div class="alert alert-info" role="alert">
-    Commands
+<div class="alert alert-info d-flex justify-content-between" role="alert">
+    <span>Commands</span>
+    <span style="cursor:pointer">clear</span>
 </div>
 
 @*<p>@commandService.GetSummary()</p>*@
