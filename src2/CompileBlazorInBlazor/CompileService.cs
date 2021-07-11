@@ -197,30 +197,30 @@ namespace CompileBlazorInBlazor
 
 
 
-        public string RunCompiled(Type type, CommandObject command)
-        {
-            //if (string.IsNullOrEmpty(command.command)) return null;
-            //var methodInfo = type.GetMethod(command.command);
-            //var instance = Activator.CreateInstance(type);
-            //if (command.data.Length > 0) return (string)methodInfo.Invoke(instance, command.data);
-            //else return (string)methodInfo.Invoke(instance, null);
+        //public string RunCompiled(Type type, Context context, CommandObject command)
+        //{
+        //    //if (string.IsNullOrEmpty(command.command)) return null;
+        //    //var methodInfo = type.GetMethod(command.command);
+        //    //var instance = Activator.CreateInstance(type);
+        //    //if (command.data.Length > 0) return (string)methodInfo.Invoke(instance, command.data);
+        //    //else return (string)methodInfo.Invoke(instance, null);
 
-            System.Diagnostics.Trace.WriteLine($"Here's the type: {type.FullName}");
+        //    System.Diagnostics.Trace.WriteLine($"Here's the type: {type.FullName}");
 
-            if (!typeof(AbstractCommand).IsAssignableFrom(type))
-            {
-                return "";
-            }
+        //    if (!typeof(AbstractCommand).IsAssignableFrom(type))
+        //    {
+        //        return "";
+        //    }
 
-            var instance = Activator.CreateInstance(type) as AbstractCommand;
+        //    var instance = Activator.CreateInstance(type) as AbstractCommand;
 
-            Context context = new Context();
+        //    //Context context = new Context();
 
-            _commandService.RunCommand(instance, context, null);
+        //    _commandService.RunCommand(instance, context, null);
 
-            return "";
+        //    return "";
 
-        }
+        //}
     }
 
     public class CommandObject

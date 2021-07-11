@@ -14,17 +14,10 @@ namespace CompileBlazorInBlazor.Demo
         public abstract string Name { get; }
         public abstract string Author { get; }
         public abstract string Description { get; }
-        //public abstract System.Drawing.Color Accent { get; }
+        public abstract string Accent { get; }
         public abstract void RegisterInputArguments(DataAccess dataAccess);
         public abstract string CommandLineName { get; }
         public abstract CommandStatus RunCommand(Context context, DataAccess dataAccess);
-
-        public int RequestArgument(Type T, string prompt, string description)
-        {
-            //this.Arguments.Add(new AbstractArgument<T>());
-            //return (this.Arguments.Count - 1);
-            return -1;
-        }
     }
 
     public abstract class AbstractArgument<T> : IAbstractArgument
@@ -57,6 +50,20 @@ namespace CompileBlazorInBlazor.Demo
             }
         }
 
+        public bool TryPushValue(object data)
+        {
+            try
+            {
+                var temp = (T)data;
+                if (temp != null) this.CurrentValue = temp;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
         public abstract void RenderArgumentInput();
     }
 
@@ -66,6 +73,7 @@ namespace CompileBlazorInBlazor.Demo
         public string Description { get; set; }
 
         public object DefaultValueUntyped { get; }
+        public bool TryPushValue(object data);
 
         bool GetData<T>(ref T data);
     }

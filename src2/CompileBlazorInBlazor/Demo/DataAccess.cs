@@ -47,5 +47,21 @@ namespace CompileBlazorInBlazor.Demo
                 return false;
             }
         }
+
+        public bool PushDataFromObjArray(object[] objs)
+        {
+            bool cumulative = true;
+            //System.Diagnostics.Trace.WriteLine($"Arguments count: {objs.Length.ToString()}");
+            for (var i = 0; i < this.Arguments.Count; i++)
+            {
+                //System.Diagnostics.Trace.WriteLine($"Pushing argument at index: {i} containing data {objs[i].ToString()}");
+                IAbstractArgument a = this.Arguments[i];
+                System.Diagnostics.Trace.WriteLine($"Trying {a.Prompt} = {objs[i].ToString()}");
+                if (objs[i] != null) cumulative = (cumulative && a.TryPushValue(objs[i]));
+                else return false;
+                //System.Diagnostics.Trace.WriteLine($"Pushed.");
+            }
+            return cumulative;
+        }
     }
 }

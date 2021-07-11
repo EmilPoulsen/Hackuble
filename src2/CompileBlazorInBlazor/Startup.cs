@@ -9,6 +9,7 @@ namespace CompileBlazorInBlazor
         {
             services.AddSingleton<CompileService>();
             services.AddSingleton<CommandService>();
+            services.AddSingleton<Context>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

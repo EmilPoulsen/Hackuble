@@ -32,10 +32,44 @@ namespace CompileBlazorInBlazor
         {
             var status = command.RunCommand(context, dataAccess);
 
-            System.Diagnostics.Trace.WriteLine($"Number of cubes: {context.Cubes.Count}");
+            //System.Diagnostics.Trace.WriteLine($"Number of cubes: {context.Cubes.Count}");
 
             ParseContext(context);
 
+        }
+
+        public AbstractCommand FindCommand(string commandLineName)
+        {
+            foreach (AbstractCommand c in this.Commands)
+            {
+                //System.Diagnostics.Trace.WriteLine($"Checking against Command {c.CommandLineName}");
+                if (c.CommandLineName == commandLineName)
+                {
+                    System.Diagnostics.Trace.WriteLine($"Found Command {c.CommandLineName}!");
+                    return c;
+                }
+            }
+            System.Diagnostics.Trace.WriteLine($"Command {commandLineName} not found");
+            return null;
+        }
+
+        public void RunJSONCommand(string json, Context context)
+        {
+            DataAccess dataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
+            CommandObject co = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(json);
+            AbstractCommand command = this.FindCommand(co.command);
+            command.RegisterInputArguments(dataAccess);
+            //System.Diagnostics.Trace.WriteLine("Command: " + co.command + ", argCount: " + co.data.Length.ToString());
+            if (!dataAccess.PushDataFromObjArray(co.data))
+            {
+                System.Diagnostics.Trace.WriteLine($"Unable to push arguments");
+            }
+            dataAccess.PushDataFromObjArray(co.data);
+            //System.Diagnostics.Trace.WriteLine("Running " + command.CommandLineName);
+            if (command != null)
+            {
+                RunCommand(command, context, dataAccess);
+            }
         }
 
         public async void ParseContext(Context context)

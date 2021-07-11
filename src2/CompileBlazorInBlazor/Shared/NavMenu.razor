@@ -1,5 +1,6 @@
 ﻿@inject CompileService service
 @inject CommandService commandService
+@inject Context CurrentContext
 
 
 <div class="top-row pl-4 navbar navbar-dark">
@@ -39,19 +40,19 @@
         <div class="px-3" id="commandContainer" style="height: 60vh; overflow:auto">
 
 
-                @{
-                    foreach (var command in commandService.Commands)
-                    {
-                            @*<button @onclick="(command) => { RunCommand };">Command</button>*@
-                            <button class="btn btn-info btn-sm my-2" @onclick="@(e => RunCommand(command))">@command.Name</button>
-                    }
+            @{
+                foreach (var command in commandService.Commands)
+                {
+                    @*<button @onclick="(command) => { RunCommand };">Command</button>*@
+                    <button class="btn btn-info btn-sm my-2" @onclick="@(e => RunCommand(command))" style="background-color:@command.Accent; border-color:#1a1a1a">@command.Name</button>
                 }
+            }
         </div>
     </div>
 
 
 
-    <div class="d-flex mt-5" >
+    <div class="d-flex mt-5">
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
         <!-- Button trigger modal -->
         <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">Create New Command</button>
@@ -120,7 +121,7 @@
                             }
                         }
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => CloseCommandModal()">Close</button>
@@ -160,22 +161,23 @@
 
                     <label for="command">Command</label>
                     <textarea class="form-control" id="command" rows="3" @bind="@CommandJSON"></textarea>
+                    <button type="button" class="btn btn-primary" @onclick="RunDebug">Run</button><br />
 
                     <hr>
-                    <button type="button" class="btn btn-primary" @onclick="Run">Add to toolbar</button><br />
+                    <button type="button" class="btn btn-primary" @onclick="AddToToolbar">Add to toolbar</button><br />
                     <pre class="overflow-auto" style="height:50px">@ResultText</pre>
 
 
                     @*<div class="card">
-                            <div class="card-body p-0">
-                                <pre class="overflow-auto" style="height:50px">@ResultText</pre>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <pre>@CompileText</pre>
-                            </div>
-                        </div>*@
+            <div class="card-body p-0">
+                <pre class="overflow-auto" style="height:50px">@ResultText</pre>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <pre>@CompileText</pre>
+            </div>
+        </div>*@
 
                 </div>
                 <div class="modal-footer">
@@ -198,52 +200,52 @@
 
 
 @functions {
-        CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
-        CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
+    CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
+    CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
 
-        void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
+    void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
+    {
+        //var dataAccess = PresentCommandUserInterface(command);
+        currentDataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
+        currentCommand = command;
+        command.RegisterInputArguments(currentDataAccess);
+
+        if (currentDataAccess.Arguments.Count == 0)
         {
-            //var dataAccess = PresentCommandUserInterface(command);
-            currentDataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
-            currentCommand = command;
-            command.RegisterInputArguments(currentDataAccess);
-
-            if (currentDataAccess.Arguments.Count == 0)
-            {
-                ProceedRunCommand();
-            }
-            else
-            {
-                PresentCommandUserInterface(currentDataAccess);
-            }
-
-
+            ProceedRunCommand();
+        }
+        else
+        {
+            PresentCommandUserInterface(currentDataAccess);
         }
 
 
-        CompileBlazorInBlazor.Demo.DataAccess PresentCommandUserInterface(CompileBlazorInBlazor.Demo.DataAccess dataAccess)
-        {
-            System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
-
-            //foreach (var argument in dataAccess.Arguments)
-            //{
-
-            //}
-            LaunchCommandRunner();
-            //foreach (var argument in command.Arguments)
-            //{
-            //    string name = argument.Prompt;
-            //    string description = argument.Prompt;
+    }
 
 
+    CompileBlazorInBlazor.Demo.DataAccess PresentCommandUserInterface(CompileBlazorInBlazor.Demo.DataAccess dataAccess)
+    {
+        System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
 
-            //}
+        //foreach (var argument in dataAccess.Arguments)
+        //{
+
+        //}
+        LaunchCommandRunner();
+        //foreach (var argument in command.Arguments)
+        //{
+        //    string name = argument.Prompt;
+        //    string description = argument.Prompt;
 
 
-            return null;
-        }
 
-        bool collapseNavMenu = true;
+        //}
+
+
+        return null;
+    }
+
+    bool collapseNavMenu = true;
 
 
 
@@ -302,132 +304,161 @@
 
     public void ProceedRunCommand()
     {
-        CompileBlazorInBlazor.Demo.Context context = new CompileBlazorInBlazor.Demo.Context();
-        var command = currentCommand;
-        var dataAccess = currentDataAccess;
+        @*CompileBlazorInBlazor.Demo.Context context = new CompileBlazorInBlazor.Demo.Context();*@
+    var command = currentCommand;
+    var dataAccess = currentDataAccess;
 
-        commandService.RunCommand(command, context, dataAccess);
+    commandService.RunCommand(command, CurrentContext, dataAccess);
 
-        //System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
-        CloseCommandModal();
+    //System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
+    CloseCommandModal();
 
-        currentCommand = null;
-        currentDataAccess = null;
-    }
+    currentCommand = null;
+    currentDataAccess = null;
+}
 
-    public async Task Compile()
-    {
-        try
-        {
-            LoadingBarDisplay = "block;";
-            service.CompileLog = new List<string>();
-            CompiledType = await service.CompileOnly(CsCode);
-        }
-        catch (Exception e)
-        {
-            service.CompileLog.Add(e.Message);
-            service.CompileLog.Add(e.StackTrace);
-            throw;
-        }
-        finally
-        {
-            CompileText = string.Join("\r\n", service.CompileLog);
-            this.StateHasChanged();
-            LoadingBarDisplay = "none;";
-        }
-    }
-
-    public void Run()
-    {
-        System.Diagnostics.Trace.WriteLine("Hello from Run method!");
-        if (CompiledType == null) return;
-        try
-        {
-            var instance = service.CreateRunClass(CompiledType);
-            commandService.AddCommand(instance);
-            CommandObject commandObject;
-            if (!string.IsNullOrEmpty(CommandJSON))
-            {
-                commandObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(CommandJSON);
-                //ResultText = service.RunCompiled(CompiledType, commandObject);
-                ResultText = "";
-            }
-            else throw new Exception("No Command");
-        }
-        catch (Exception e)
-        {
-            service.CompileLog.Add(e.Message);
-            service.CompileLog.Add(e.StackTrace);
-            throw;
-        }
-        finally
-        {
-            CompileText = string.Join("\r\n", service.CompileLog);
-            this.StateHasChanged();
-        }
-    }
-
-    protected override void OnInitialized()
-    {
-        CsCode = @"namespace CompileBlazorInBlazor.Demo
+public async Task Compile()
 {
-    public class MyCommandExample : AbstractCommand
+    try
     {
-        public override string Name => ""Test Command 01"";
-
-        public override string Author => ""Hackathon"";
-
-        public override string Description => ""lol"";
-
-        public override string CommandLineName => ""test"";
-
-        public override void RegisterInputArguments(DataAccess dataAccess)
-        {
-            dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20);
-            dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20);
-            dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20);
-            dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex format"", ""#ff6700"");
-        }
-
-        public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
-        {
-            double x = -1;
-            double y = -1;
-            double z = -1;
-            string c = ""#ffffff"";
-            if (!dataAccess.GetData<double>(0, ref x))
-            {
-                return CommandStatus.Failure;
-            }
-            if (!dataAccess.GetData<double>(1, ref y))
-            {
-                return CommandStatus.Failure;
-            }
-            if (!dataAccess.GetData<double>(2, ref z))
-            {
-                return CommandStatus.Failure;
-            }
-            if (!dataAccess.GetData<string>(3, ref c))
-            {
-                return CommandStatus.Failure;
-            }
-
-            context.AddCube(x, y, z, 20, 20, 20, c);
-            return CommandStatus.Success;
-        }
+        LoadingBarDisplay = "block;";
+        service.CompileLog = new List<string>();
+        CompiledType = await service.CompileOnly(CsCode);
     }
+    catch (Exception e)
+    {
+        service.CompileLog.Add(e.Message);
+        service.CompileLog.Add(e.StackTrace);
+        throw;
+    }
+    finally
+    {
+        CompileText = string.Join("\r\n", service.CompileLog);
+        this.StateHasChanged();
+        LoadingBarDisplay = "none;";
+    }
+}
+
+public void RunDebug()
+{
+    System.Diagnostics.Trace.WriteLine("Hello from Run method!");
+    if (CompiledType == null) return;
+    try
+    {
+        AddToToolbar();
+        if (!string.IsNullOrEmpty(CommandJSON))
+        {
+            commandService.RunJSONCommand(CommandJSON, CurrentContext);
+            ResultText = "";
+        }
+        else throw new Exception("No Command");
+    }
+    catch (Exception e)
+    {
+        service.CompileLog.Add(e.Message);
+        service.CompileLog.Add(e.StackTrace);
+        throw;
+    }
+    finally
+    {
+        CompileText = string.Join("\r\n", service.CompileLog);
+        this.StateHasChanged();
+    }
+}
+
+public void AddToToolbar()
+{
+    System.Diagnostics.Trace.WriteLine("Hello from AddtoToolbar method!");
+    if (CompiledType == null) return;
+    try
+    {
+        var instance = service.CreateRunClass(CompiledType);
+        for (var i = 0; i < commandService.Commands.Count; i++)
+        {
+            CompileBlazorInBlazor.Demo.AbstractCommand c = commandService.Commands[i];
+            if (c.CommandLineName == instance.CommandLineName)
+            {
+                System.Diagnostics.Trace.WriteLine($"Command already exists! Replacing {c.CommandLineName}");
+                commandService.Commands[i] = instance;
+                return;
+            }
+        }
+        commandService.AddCommand(instance);
+    }
+    catch (Exception e)
+    {
+        service.CompileLog.Add(e.Message);
+        service.CompileLog.Add(e.StackTrace);
+        throw;
+    }
+    finally
+    {
+        CompileText = string.Join("\r\n", service.CompileLog);
+        this.StateHasChanged();
+    }
+}
+
+protected override void OnInitialized()
+{
+    CsCode = @"namespace CompileBlazorInBlazor.Demo
+{
+public class MyCommandExample : AbstractCommand
+{
+    public override string Name => ""Test Command 01"";
+
+    public override string Author => ""Hackathon"";
+
+    public override string Description => ""lol"";
+
+    public override string CommandLineName => ""test"";
+
+    public override string Accent => ""#77F798"";
+
+    public override void RegisterInputArguments(DataAccess dataAccess)
+    {
+        dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20);
+        dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20);
+        dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20);
+        dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex format"", ""#ff6700"");
+    }
+
+    public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
+    {
+        double x = -1;
+        double y = -1;
+        double z = -1;
+        string c = ""#ffffff"";
+        if (!dataAccess.GetData<double>(0, ref x))
+        {
+            return CommandStatus.Failure;
+        }
+        if (!dataAccess.GetData<double>(1, ref y))
+        {
+            return CommandStatus.Failure;
+        }
+        if (!dataAccess.GetData<double>(2, ref z))
+        {
+            return CommandStatus.Failure;
+        }
+        if (!dataAccess.GetData<string>(3, ref c))
+        {
+            return CommandStatus.Failure;
+        }
+
+        context.AddCube(x, y, z, 20, 20, 20, c);
+        return CommandStatus.Success;
+    }
+}
 }
 ";
 
-        CommandJSON = @"{""command"":"""",
+    CommandJSON = @"{""command"":"""",
 ""data"":[
-    
+
 ]}
 ";
-    }
+}
 }
 
 
 
-
-        @*public override Color Accent => Color.OrangeRed;*@
