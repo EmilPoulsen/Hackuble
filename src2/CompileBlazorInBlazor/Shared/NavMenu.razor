@@ -75,7 +75,24 @@
 
     @*<CompileBlazorInBlazor.Component.CommandModal @ref="Modal"></CompileBlazorInBlazor.Component.CommandModal>*@
 
-
+    <div class="modal @ModalClass overflow-auto" tabindex="-1" role="dialog" style="display:@CommandModalDisplay;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body overflow-auto" style="height: 550px">
+                    <label for="command">Command Arguments</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => CloseCommandModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="modal @ModalClass overflow-auto" tabindex="-1" role="dialog" style="display:@ModalDisplay;">
@@ -149,11 +166,11 @@
 
         PresentCommandUserInterface(dataAccess);
 
-        CompileBlazorInBlazor.Demo.Context context = new CompileBlazorInBlazor.Demo.Context();
+        //CompileBlazorInBlazor.Demo.Context context = new CompileBlazorInBlazor.Demo.Context();
 
-        commandService.RunCommand(command, context, dataAccess);
+        //commandService.RunCommand(command, context, dataAccess);
 
-        System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
+        //System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
     }
 
 
@@ -165,7 +182,7 @@
         {
 
         }
-
+        LaunchCommandRunner();
         //foreach (var argument in command.Arguments)
         //{
         //    string name = argument.Prompt;
@@ -185,7 +202,10 @@
 
 public Guid Guid = Guid.NewGuid();
 public string ModalDisplay = "none;";
+public string CommandModalDisplay = "none;";
+
 public string ModalClass = "";
+public string CommandModalClass = "";
 public bool ShowBackdrop = false;
 
 string CsCode { get; set; }
@@ -211,6 +231,22 @@ public void launchCommandEditor()
 public void Close()
 {
     ModalDisplay = "none";
+    ModalClass = "";
+    ShowBackdrop = false;
+    StateHasChanged();
+}
+
+public void LaunchCommandRunner()
+{
+    CommandModalDisplay = "block;";
+    CommandModalClass = "Show";
+    ShowBackdrop = true;
+    StateHasChanged();
+}
+
+public void CloseCommandModal()
+{
+    CommandModalDisplay = "none";
     ModalClass = "";
     ShowBackdrop = false;
     StateHasChanged();
