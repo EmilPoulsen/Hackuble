@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompileBlazorInBlazor", "CompileBlazorInBlazor\CompileBlazorInBlazor.csproj", "{479EF03C-388F-4B93-AF92-7C40476FCA8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackuble.Core", "Hackuble.Core\Hackuble.Core.csproj", "{40B9CE8E-1138-4A4B-A339-6E9E3E12CB22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackuble.Core", "Hackuble.Core\Hackuble.Core.csproj", "{40B9CE8E-1138-4A4B-A339-6E9E3E12CB22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackuble.Examples", "Hackuble.Examples\Hackuble.Examples.csproj", "{304B2735-B52D-4CDD-B819-507DAD9D6068}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{40B9CE8E-1138-4A4B-A339-6E9E3E12CB22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40B9CE8E-1138-4A4B-A339-6E9E3E12CB22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40B9CE8E-1138-4A4B-A339-6E9E3E12CB22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{304B2735-B52D-4CDD-B819-507DAD9D6068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{304B2735-B52D-4CDD-B819-507DAD9D6068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{304B2735-B52D-4CDD-B819-507DAD9D6068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{304B2735-B52D-4CDD-B819-507DAD9D6068}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
