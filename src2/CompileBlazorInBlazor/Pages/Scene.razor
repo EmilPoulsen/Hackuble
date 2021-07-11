@@ -2,30 +2,11 @@
 @inject IJSRuntime JSRuntime;
 @inject Context CurrentContext;
 
-<input type="file"
-        id="avatar" name="avatar"
-        accept="image/png, image/jpeg">
-<InputFile OnChange="HandleSelection" />
 <canvas></canvas>
 
 <button class="add-cube-btn" @onclick="MyButtonClick" style="position:absolute; right: 10px; top: 10px;">Clear</button>
 
 @code {
-    string fileStatus;
-
-    async Task HandleSelection(IFileListEntry[] files)
-    {
-        var file = files.FirstOrDefault();
-        if (file != null)
-        {
-            // Just load into .NET memory to show it can be done
-            // Alternatively it could be saved to disk, or parsed in memory, or similar
-            var ms = new System.IO.MemoryStream();
-            await file.Data.CopyToAsync(ms);
-
-            fileStatus = $"Finished loading {file.Size} bytes from {file.Name}";
-        }
-    }
 
     private static System.Timers.Timer aTimer;
     private string status = "healthy";
