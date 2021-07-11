@@ -43,7 +43,7 @@
                 return CommandStatus.Failure;
             }
 
-            context.AddCube(x, y, z, 20, 20, 20, c);
+            context.AddCube(x, y, z, 0, 0, 0, c);
             return CommandStatus.Success;
         }
     }
@@ -73,7 +73,7 @@
                 return CommandStatus.Failure;
             }
 
-            context.AddCube(20.0, 20.0, 20.0, 20, 20, 20, c);
+            context.AddCube(20.0, 20.0, 20.0, 0, 0, 0, c);
             return CommandStatus.Success;
         }
     }

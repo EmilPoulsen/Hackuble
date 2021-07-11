@@ -27,6 +27,7 @@ namespace CompileBlazorInBlazor.Demo
             this.Prompt = prompt;
             this.Description = description;
             this.DefaultValue = defaultValue;
+            this.CurrentValue = defaultValue;
         }
         public T CurrentValue { get; set; }
 
