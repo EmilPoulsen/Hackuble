@@ -9,7 +9,7 @@ var caller;
 var controls;
 
 function createScene(reference) {
-    window.addEventListener('click', onDocumentMouseDown, false);
+    //window.addEventListener('click', onDocumentMouseDown, false);
     caller = reference;
     scene = new THREE.Scene();
 

@@ -69,11 +69,11 @@ namespace CompileBlazorInBlazor.Demo
 
     public interface IAbstractArgument
     {
-        public string Prompt { get; set; }
-        public string Description { get; set; }
+        string Prompt { get; set; }
+        string Description { get; set; }
 
-        public object DefaultValueUntyped { get; }
-        public bool TryPushValue(object data);
+        object DefaultValueUntyped { get; }
+        bool TryPushValue(object data);
 
         bool GetData<T>(ref T data);
     }

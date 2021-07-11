@@ -1,6 +1,7 @@
 ﻿@inject CompileService service;
 @inject CommandService commandService;
 @inject Context CurrentContext;
+@inject LoaderService loadService;
 
 
 <div class="top-row pl-4 navbar navbar-dark">
@@ -56,7 +57,7 @@
         @*<button class="btn btn-primary mx-auto" type="submit" @onclick=@launchCommandEditor>Button</button>*@
         <!-- Button trigger modal -->
         <button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">Create New Command</button>
-
+        <InputFile class="btn btn-primary mx-auto" OnChange="HandleSelection" />
     </div>
 
 
@@ -200,6 +201,32 @@
 
 
 @functions {
+    string status;
+
+    async Task HandleSelection(IFileListEntry[] files)
+    {
+        System.Diagnostics.Trace.WriteLine("HandleSelection called!");
+
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            // Just load into .NET memory to show it can be done
+            // Alternatively it could be saved to disk, or parsed in memory, or similar
+            var ms = new System.IO.MemoryStream();
+            await file.Data.CopyToAsync(ms);
+
+            status = $"Finished loading {file.Size} bytes from {file.Name}";
+            System.Diagnostics.Trace.WriteLine(status);
+
+            var loadedCommands = loadService.Load(ms);
+
+            foreach (var loadedCommand in loadedCommands)
+            {
+                commandService.AddCommand(loadedCommand);
+            }
+        }
+    }
+
     CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
     CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
 
