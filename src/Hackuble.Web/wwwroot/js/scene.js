@@ -144,8 +144,8 @@ function clearScene() {
 
     for (var i = 0; i < tempList.length; i++) {
         var currObj = tempList[i];
-
-        if (currObj.name != "GridHelper") {
+        //avoid deleting the gridhelper and the light
+        if (!(currObj.name == "GridHelper" || currObj.type == "HemisphereLight")) {
             scene.remove(currObj);
         }
     }
