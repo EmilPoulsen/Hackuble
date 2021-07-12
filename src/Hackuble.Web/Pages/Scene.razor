@@ -1,6 +1,5 @@
 ﻿@page "/"
 @inject IJSRuntime JSRuntime;
-@inject Context CurrentContext;
 
 <canvas></canvas>
 
@@ -68,7 +67,6 @@
     {
         await JSRuntime.InvokeAsync<object>
             ("clearScene", new object[] { });
-        CurrentContext = new Context();
     }
 
 }

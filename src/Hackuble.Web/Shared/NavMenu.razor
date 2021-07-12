@@ -1,6 +1,5 @@
 ﻿@inject CompileService service;
 @inject CommandService commandService;
-@inject Context CurrentContext;
 @inject LoaderService loadService;
 
 
@@ -345,7 +344,8 @@ public void ProceedRunCommand()
     var command = currentCommand;
     var dataAccess = currentDataAccess;
 
-    commandService.RunCommand(command, CurrentContext, dataAccess);
+    var context = new Context();
+    commandService.RunCommand(command, context, dataAccess);
 
     //System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
     CloseCommandModal();
@@ -385,7 +385,8 @@ public void RunDebug()
         AddToToolbar();
         if (!string.IsNullOrEmpty(CommandJSON))
         {
-            commandService.RunJSONCommand(CommandJSON, CurrentContext);
+            var context = new Context();
+            commandService.RunJSONCommand(CommandJSON, context);
             ResultText = "";
         }
         else throw new Exception("No Command");
