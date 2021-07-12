@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using CompileBlazorInBlazor.Demo;
+using Hackuble.Commands;
 using Microsoft.AspNetCore.Blazor.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.Language;
@@ -146,7 +146,7 @@ namespace Hackuble.Web
 
             CompileLog.Add("Parse SyntaxTree Success");
 
-            CSharpCompilation compilation = CSharpCompilation.Create("CompileBlazorInBlazor.Demo", new[] {syntaxTree},
+            CSharpCompilation compilation = CSharpCompilation.Create("Hackuble.Web", new[] {syntaxTree},
                 references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
             using (MemoryStream stream = new MemoryStream())

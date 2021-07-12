@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using CompileBlazorInBlazor;
+using Hackuble.Commands;
 
 namespace Hackuble.Web
 {

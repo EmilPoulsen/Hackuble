@@ -1,10 +1,9 @@
-﻿using CompileBlazorInBlazor.Demo;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CompileBlazorInBlazor;
+using Hackuble.Commands;
 
 namespace Hackuble.Web
 {
@@ -56,7 +55,7 @@ namespace Hackuble.Web
 
         public void RunJSONCommand(string json, Context context)
         {
-            DataAccess dataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
+            DataAccess dataAccess = new DataAccess();
             CommandObject co = Newtonsoft.Json.JsonConvert.DeserializeObject<CommandObject>(json);
             AbstractCommand command = this.FindCommand(co.command);
             command.RegisterInputArguments(dataAccess);

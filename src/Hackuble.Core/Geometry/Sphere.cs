@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Geometry
 {
     public class Sphere
     {
