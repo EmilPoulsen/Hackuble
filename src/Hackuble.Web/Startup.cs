@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Hackuble.Commands;
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Web
 {
     public class Startup
     {

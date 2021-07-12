@@ -6,7 +6,7 @@
 
 <div class="top-row pl-4 mt-2 navbar navbar-dark">
     <h5>
-        <img src="https://raw.githubusercontent.com/EmilPoulsen/AecHackBlazor/main/src2/CompileBlazorInBlazor/wwwroot/icon.png" width="30" height="30" alt="" style="filter: invert(1);">
+        <img src="https://raw.githubusercontent.com/EmilPoulsen/Hackuble/main/src/Hackuble/wwwroot/icon.png" width="30" height="30" alt="" style="filter: invert(1);">
         <a class="navbar-brand ml-2" href="">Hakc#uble</a>
     </h5>
     <button class="navbar-toggler" @onclick=@ToggleNavMenu>
@@ -70,8 +70,6 @@
 
 
 
-    @*<CompileBlazorInBlazor.Component.CommandModal @ref="Modal"></CompileBlazorInBlazor.Component.CommandModal>*@
-
     <div class="modal @ModalClass overflow-auto" tabindex="-1" role="dialog" style="display:@CommandModalDisplay;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -89,9 +87,9 @@
                             {
                                 foreach (var arg in currentDataAccess.Arguments)
                                 {
-                                    if (arg is CompileBlazorInBlazor.Demo.NumberArgument)
+                                    if (arg is NumberArgument)
                                     {
-                                        var numArg = arg as CompileBlazorInBlazor.Demo.NumberArgument;
+                                        var numArg = arg as NumberArgument;
 
                                         <div class="d-flex my-1">
                                             <div class="input-group-prepend">
@@ -101,9 +99,9 @@
                                             <input class="form-control" @bind="numArg.CurrentValue" type="number" />
                                         </div>
                                     }
-                                    else if (arg is CompileBlazorInBlazor.Demo.IntegerArgument)
+                                    else if (arg is IntegerArgument)
                                     {
-                                        var intArg = arg as CompileBlazorInBlazor.Demo.IntegerArgument;
+                                        var intArg = arg as IntegerArgument;
 
                                         <div class="d-flex my-1">
                                             <div class="input-group-prepend">
@@ -113,9 +111,9 @@
                                             <input class="form-control" @bind="intArg.CurrentValue" type="number" />
                                         </div>
                                     }
-                                    else if (arg is CompileBlazorInBlazor.Demo.TextArgument)
+                                    else if (arg is TextArgument)
                                     {
-                                        var textArg = arg as CompileBlazorInBlazor.Demo.TextArgument;
+                                        var textArg = arg as TextArgument;
 
                                         <div class="d-flex my-1">
                                             <div class="input-group-prepend" style="min-width:50px">
@@ -234,13 +232,13 @@
         }
     }
 
-    CompileBlazorInBlazor.Demo.DataAccess currentDataAccess;
-    CompileBlazorInBlazor.Demo.AbstractCommand currentCommand;
+    DataAccess currentDataAccess;
+    AbstractCommand currentCommand;
 
-    void RunCommand(CompileBlazorInBlazor.Demo.AbstractCommand command)
+    void RunCommand(AbstractCommand command)
     {
         //var dataAccess = PresentCommandUserInterface(command);
-        currentDataAccess = new CompileBlazorInBlazor.Demo.DataAccess();
+        currentDataAccess = new DataAccess();
         currentCommand = command;
         command.RegisterInputArguments(currentDataAccess);
 
@@ -263,7 +261,7 @@
     }
 
 
-    CompileBlazorInBlazor.Demo.DataAccess PresentCommandUserInterface(CompileBlazorInBlazor.Demo.DataAccess dataAccess)
+    DataAccess PresentCommandUserInterface(DataAccess dataAccess)
     {
         System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
 
@@ -289,62 +287,61 @@
 
 
 
-    public Guid Guid = Guid.NewGuid();
-    public string ModalDisplay = "none;";
-    string LoadingBarDisplay = "none;";
-    public string CommandModalDisplay = "none;";
+public Guid Guid = Guid.NewGuid();
+public string ModalDisplay = "none;";
+string LoadingBarDisplay = "none;";
+public string CommandModalDisplay = "none;";
 
-    public string ModalClass = "";
-    public string CommandModalClass = "";
-    public bool ShowBackdrop = false;
+public string ModalClass = "";
+public string CommandModalClass = "";
+public bool ShowBackdrop = false;
 
-    string CsCode { get; set; }
-    string ResultText { get; set; }
-    string CompileText { get; set; }
-    Type CompiledType { get; set; }
-    string CommandJSON { get; set; }
+string CsCode { get; set; }
+string ResultText { get; set; }
+string CompileText { get; set; }
+Type CompiledType { get; set; }
+string CommandJSON { get; set; }
 
-    void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+void ToggleNavMenu()
+{
+    collapseNavMenu = !collapseNavMenu;
+}
 
 
-    public void launchCommandEditor()
-    {
-        ModalDisplay = "block;";
-        ModalClass = "Show";
-        ShowBackdrop = true;
-        StateHasChanged();
-    }
+public void launchCommandEditor()
+{
+    ModalDisplay = "block;";
+    ModalClass = "Show";
+    ShowBackdrop = true;
+    StateHasChanged();
+}
 
-    public void Close()
-    {
-        ModalDisplay = "none";
-        ModalClass = "";
-        ShowBackdrop = false;
-        StateHasChanged();
-    }
+public void Close()
+{
+    ModalDisplay = "none";
+    ModalClass = "";
+    ShowBackdrop = false;
+    StateHasChanged();
+}
 
-    public void LaunchCommandRunner()
-    {
-        CommandModalDisplay = "block;";
-        CommandModalClass = "Show";
-        ShowBackdrop = true;
-        StateHasChanged();
-    }
+public void LaunchCommandRunner()
+{
+    CommandModalDisplay = "block;";
+    CommandModalClass = "Show";
+    ShowBackdrop = true;
+    StateHasChanged();
+}
 
-    public void CloseCommandModal()
-    {
-        CommandModalDisplay = "none";
-        ModalClass = "";
-        ShowBackdrop = false;
-        StateHasChanged();
-    }
+public void CloseCommandModal()
+{
+    CommandModalDisplay = "none";
+    ModalClass = "";
+    ShowBackdrop = false;
+    StateHasChanged();
+}
 
-    public void ProceedRunCommand()
-    {
-        @*CompileBlazorInBlazor.Demo.Context context = new CompileBlazorInBlazor.Demo.Context();*@
+public void ProceedRunCommand()
+{
     var command = currentCommand;
     var dataAccess = currentDataAccess;
 
@@ -415,7 +412,7 @@ public void AddToToolbar()
         var instance = service.CreateRunClass(CompiledType);
         for (var i = 0; i < commandService.Commands.Count; i++)
         {
-            CompileBlazorInBlazor.Demo.AbstractCommand c = commandService.Commands[i];
+            AbstractCommand c = commandService.Commands[i];
             if (c.CommandLineName == instance.CommandLineName)
             {
                 System.Diagnostics.Trace.WriteLine($"Command already exists! Replacing {c.CommandLineName}");
@@ -440,65 +437,68 @@ public void AddToToolbar()
 
 protected override void OnInitialized()
 {
-    CsCode = @"namespace CompileBlazorInBlazor.Demo
+    CsCode = @"
+using Hackuble.Commands;
+
+namespace Hackuble.Examples
 {
-public class MyCommandExample : AbstractCommand
-{
-    public override string Name => ""Test Command 01"";
-
-    public override string Author => ""Hackathon"";
-
-    public override string Description => ""lol"";
-
-    public override string CommandLineName => ""test"";
-
-    public override string Accent => ""#77F798"";
-
-    public override void RegisterInputArguments(DataAccess dataAccess)
+    public class AddCube : AbstractCommand
     {
-        dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20);
-        dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20);
-        dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20);
-        dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex format"", ""#ff6700"");
-    }
+        public override string Name => ""Add Cube"";
 
-    public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
-    {
-        double x = -1;
-        double y = -1;
-        double z = -1;
-        string c = ""#ffffff"";
-        if (!dataAccess.GetData<double>(0, ref x))
+        public override string Author => ""Hackathon21"";
+
+        public override string Description => ""Add a cuboid to the scene"";
+
+        public override string CommandLineName => ""cube"";
+
+        public override string Accent => ""#77F798"";
+
+        public override void RegisterInputArguments(DataAccess dataAccess)
         {
-            return CommandStatus.Failure;
-        }
-        if (!dataAccess.GetData<double>(1, ref y))
-        {
-            return CommandStatus.Failure;
-        }
-        if (!dataAccess.GetData<double>(2, ref z))
-        {
-            return CommandStatus.Failure;
-        }
-        if (!dataAccess.GetData<string>(3, ref c))
-        {
-            return CommandStatus.Failure;
+            dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20.0);
+            dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20.0);
+            dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20.0);
+            dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex Format"", ""#ff6700"");
         }
 
-        context.AddCube(x, y, z, 0, 0, 0, c);
-        return CommandStatus.Success;
+        public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
+        {
+            double x = -1;
+            double y = -1;
+            double z = -1;
+            string c = ""#ffffff"";
+            if (!dataAccess.GetData<double>(0, ref x))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<double>(1, ref y))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<double>(2, ref z))
+            {
+                return CommandStatus.Failure;
+            }
+            if (!dataAccess.GetData<string>(3, ref c))
+            {
+                return CommandStatus.Failure;
+            }
+
+            context.AddCube(x, y, z, 0, 0, 0, c);
+            return CommandStatus.Success;
+        }
     }
-}
 }
 ";
 
     CommandJSON = @"{""command"":"""",
-""data"":[
+    ""data"":[
 
-]}
-";
-}
-}
+    ]}
+    ";
+    }
+    }
 
 
 

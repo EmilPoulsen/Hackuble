@@ -1,4 +1,6 @@
-﻿namespace CompileBlazorInBlazor.Demo.Examples
+﻿using Hackuble.Commands;
+
+namespace Hackuble.Examples
 {
     public class AddSphere : AbstractCommand
     {

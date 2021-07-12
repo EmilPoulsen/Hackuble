@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Web
 {
     public class Program
     {

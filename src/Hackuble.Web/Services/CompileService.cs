@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using CompileBlazorInBlazor.Demo;
+using Hackuble.Commands;
 using Microsoft.AspNetCore.Blazor.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.Language;
@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.JSInterop;
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Web
 {
     public class CompileService
     {
@@ -146,7 +146,7 @@ namespace CompileBlazorInBlazor
 
             CompileLog.Add("Parse SyntaxTree Success");
 
-            CSharpCompilation compilation = CSharpCompilation.Create("CompileBlazorInBlazor.Demo", new[] {syntaxTree},
+            CSharpCompilation compilation = CSharpCompilation.Create("Hackuble.Web", new[] {syntaxTree},
                 references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
             using (MemoryStream stream = new MemoryStream())
@@ -229,32 +229,3 @@ namespace CompileBlazorInBlazor
         public object[] data { get; set; }
     }
 }
-
-
-////--------------------------------------------------------
-
-//using System.Text;
-//using Microsoft.JSInterop;
-//using System.Threading.Tasks;
-
-//        namespace CompileBlazorInBlazor.Demo
-//{
-//    public class RunClass
-//    {
-//        public string Run(string name)
-//        {
-//            var sb = new StringBuilder();
-//            for (int i = 0; i < 5; i++)
-//            {
-//                sb.AppendLine($"{i}) Hello, {name}!");
-//            }
-
-//            return sb.ToString();
-//        }
-//        public async Task<object> RunB()
-//        {
-//            await CompileService.InvokeJS("clickCube", new object[] { });
-//            return null;
-//        }
-//    }
-//}

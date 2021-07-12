@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CompileBlazorInBlazor.Demo
+namespace Hackuble.Arguments
 {
     public interface IAbstractArgument
     {
