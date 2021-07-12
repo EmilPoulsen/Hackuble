@@ -14,7 +14,9 @@ function createScene(reference) {
     scene = new THREE.Scene();
 
     scene.background = new THREE.Color(0xfafafa);
-    //scene.background = new THREE.Color(0xFFF5FD);
+
+    const light1 = new THREE.HemisphereLight(0xffffff, 0x888888, 1);
+    scene.add(light1);
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -74,7 +76,9 @@ function addCube(x, y, z, locX, locY, locZ, color) {
     //Create the cube.
     var geometry = new THREE.BoxGeometry(x, y, z);
     var color1 = new THREE.Color(color);
-    material = new THREE.MeshBasicMaterial({ color: color1 });
+
+    var material = new THREE.MeshPhongMaterial({ color: color1 });
+
     cube = new THREE.Mesh(geometry, material);
 
     //Create edges
@@ -102,7 +106,7 @@ function addCube(x, y, z, locX, locY, locZ, color) {
 function addSphere(r, u, v, color) {
     var geometry = new THREE.SphereGeometry(r, u, v);
     var color1 = new THREE.Color(color);
-    material = new THREE.MeshBasicMaterial({ color: color1 });
+    var material = new THREE.MeshPhongMaterial({ color: color1 });
     sphere = new THREE.Mesh(geometry, material);
     //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
     scene.add(sphere);
