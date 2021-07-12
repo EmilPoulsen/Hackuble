@@ -1,7 +1,7 @@
 ﻿@inject CompileService service;
 @inject CommandService commandService;
 @inject LoaderService loadService;
-
+@inject IJSRuntime JSRuntime;
 
 <div class="top-row pl-4 mt-2 navbar navbar-dark">
     <h5>
@@ -59,10 +59,12 @@
         <button class="btn btn-primary btn-block" @onclick="launchCommandEditor" style="height:44px">New Command</button>
     </div>
 
+
     <div class="d-flex mt-1 px-4">
         @*<button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">New Command</button>*@
-        <InputFile class="btn btn-primary" OnChange="HandleSelection" />
+        <button class="btn btn-primary btn-block" @onclick="ClickFileUpload" style="height:44px">Load Library</button>
     </div>
+    <InputFile id="upload-library" style="display:none" OnChange="HandleSelection" />
 
 
 
@@ -205,6 +207,13 @@
 
 
 @functions {
+    public async void ClickFileUpload()
+    {
+        await JSRuntime.InvokeAsync<object>
+    ("clickFileUpload", new object[] { });
+
+    }
+
     string status;
 
     async Task HandleSelection(IFileListEntry[] files)

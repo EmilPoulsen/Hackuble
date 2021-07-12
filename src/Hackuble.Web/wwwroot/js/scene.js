@@ -168,3 +168,7 @@ var animate = function() {
     //cube.rotation.y += 0.01;
     renderer.render(scene, camera);
 };
+
+function clickFileUpload() {
+    document.getElementById("upload-library").click();
+}
