@@ -8,8 +8,6 @@
     </RestoreAdditionalProjectSources>
     <LangVersion>8.0</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <AssemblyName>CompileBlazorInBlazor</AssemblyName>
-    <RootNamespace>CompileBlazorInBlazor</RootNamespace>
   </PropertyGroup>
 
  

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackuble.Web", "CompileBlazorInBlazor\Hackuble.Web.csproj", "{479EF03C-388F-4B93-AF92-7C40476FCA8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompileBlazorInBlazor", "CompileBlazorInBlazor\CompileBlazorInBlazor.csproj", "{479EF03C-388F-4B93-AF92-7C40476FCA8B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackuble.Core", "Hackuble.Core\Hackuble.Core.csproj", "{40B9CE8E-1138-4A4B-A339-6E9E3E12CB22}"
 EndProject
