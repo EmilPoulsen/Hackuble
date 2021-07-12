@@ -134,6 +134,11 @@ function clickCube() {
     cube.material = new THREE.MeshBasicMaterial({ color: getRandomColor() });
 }
 
+function enableCodeMirror() {
+    var myTextArea = document.getElementById("exampleFormControlTextarea1");
+    var myCodeMirror = CodeMirror.fromTextArea(myTextArea);
+}
+
 function clearScene() {
 
     var tempList = [];
