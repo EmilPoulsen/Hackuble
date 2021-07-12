@@ -30,4 +30,10 @@
     <ProjectReference Include="..\Hackuble.Core\Hackuble.Core.csproj" />
   </ItemGroup>
 
+ 
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>
