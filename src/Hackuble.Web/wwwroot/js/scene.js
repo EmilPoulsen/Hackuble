@@ -71,33 +71,32 @@ function onDocumentMouseDown(event) {
 }
 
 function addCube(x, y, z, locX, locY, locZ, color) {
+    //Create the cube.
     var geometry = new THREE.BoxGeometry(x, y, z);
     var color1 = new THREE.Color(color);
     material = new THREE.MeshBasicMaterial({ color: color1 });
     cube = new THREE.Mesh(geometry, material);
-    //cube.position.set(locX, locY, locZ);
 
-    const wireframe = new THREE.WireframeGeometry(geometry);
-
-    var wfMaterial = new THREE.LineBasicMaterial({
+    //Create edges
+    const thresholdAngle = 15;
+    var edgesGeometry = new THREE.EdgesGeometry(geometry, thresholdAngle)
+    const edgesMaterial = new THREE.LineBasicMaterial({
         color: 0x000000,
-        linewidth: 1,
+        linewidth: 2,
         linecap: 'round', //ignored by WebGLRenderer
         linejoin: 'round' //ignored by WebGLRenderer
     });
+    const edgesMesh = new THREE.LineSegments(edgesGeometry, edgesMaterial);
 
-    const line = new THREE.LineSegments(wireframe, wfMaterial);
-
-    //line.position.set(locX, locY, locZ);
-
+    //Add the two to a group
     const group = new THREE.Group();
     group.add(cube);
-    group.add(line);
+    group.add(edgesMesh);
 
+    //Set the set the position
     group.position.set(locX, locY, locZ);
 
     scene.add(group);
-    console.log("Cube Added");
 }
 
 function addSphere(r, u, v, color) {
