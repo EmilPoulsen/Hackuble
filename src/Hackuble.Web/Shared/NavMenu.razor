@@ -171,7 +171,6 @@
                     <button type="button" class="btn btn-primary" @onclick="RunDebug">Run</button><br />
 
                     <hr>
-                    <button type="button" class="btn btn-primary" @onclick="AddToToolbar">Add to toolbar</button><br />
                     <pre class="overflow-auto" style="height:50px">@ResultText</pre>
 
 
@@ -190,6 +189,7 @@
                 <div class="modal-footer">
                     @*<button type="button" class="btn btn-primary">Save changes</button>*@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="AddToToolbar">Add to toolbar</button><br />
                 </div>
             </div>
         </div>
@@ -441,6 +441,7 @@ public void AddToToolbar()
     finally
     {
         CompileText = string.Join("\r\n", service.CompileLog);
+        Close();
         this.StateHasChanged();
     }
 }
