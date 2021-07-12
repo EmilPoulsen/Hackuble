@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Web
 {
     public class LoaderService
     {

@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CompileBlazorInBlazor;
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Web
 {
     public class CommandService
     {

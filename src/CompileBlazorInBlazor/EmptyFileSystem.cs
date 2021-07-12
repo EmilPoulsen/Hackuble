@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language;
 
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Web
 {
     public class EmptyRazorProjectFileSystem : RazorProjectFileSystem
     {

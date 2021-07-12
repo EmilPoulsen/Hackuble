@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.JSInterop;
 
-namespace CompileBlazorInBlazor
+namespace Hackuble.Web
 {
     public class CompileService
     {
