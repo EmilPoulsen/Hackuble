@@ -12,14 +12,14 @@ namespace Hackuble.Examples
 
         public override string CommandLineName => "sphere";
 
-        public override string Accent => "#D4C966";
+        public override string Accent => "#FF96AD";
 
         public override void RegisterInputArguments(DataAccess dataAccess)
         {
             dataAccess.RegisterNumberArgument("Radius", "The size of the sphere in X direction", 20.0);
             dataAccess.RegisterIntArgument("U", "The size of the sphere in Y direction", 32);
             dataAccess.RegisterIntArgument("V", "The size of the sphere in Z direction", 32);
-            dataAccess.RegisterTextArgument("Color", "The color of the sphere in Hex Format", "#ff6700");
+            dataAccess.RegisterTextArgument("Color", "The color of the sphere in Hex Format", "#FF96AD");
         }
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)

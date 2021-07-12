@@ -29,8 +29,9 @@ app {
         border-bottom: 1px solid #d6d5d5;
     }
 
+/*https://colorhunt.co/palette/fff5fdff96ad005a8d022e57*/
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(180deg, #005A8D 0%,#022E57 70%);
 }
 
     .sidebar .top-row {

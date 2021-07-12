@@ -12,14 +12,14 @@ namespace Hackuble.Examples
 
         public override string CommandLineName => "cube";
 
-        public override string Accent => "#77F798";
+        public override string Accent => "#FF96AD";
 
         public override void RegisterInputArguments(DataAccess dataAccess)
         {
             dataAccess.RegisterNumberArgument("Size X", "The size of the cube in X direction", 20.0);
             dataAccess.RegisterNumberArgument("Size Y", "The size of the cube in Y direction", 20.0);
             dataAccess.RegisterNumberArgument("Size Z", "The size of the cube in Z direction", 20.0);
-            dataAccess.RegisterTextArgument("Color", "The color of the cube in Hex Format", "#ff6700");
+            dataAccess.RegisterTextArgument("Color", "The color of the cube in Hex Format", "#FF96AD");
         }
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)

@@ -12,11 +12,11 @@ namespace Hackuble.Examples
 
         public override string CommandLineName => "cubedef";
 
-        public override string Accent => "#ff6700";
+        public override string Accent => "#FF96AD";
 
         public override void RegisterInputArguments(DataAccess dataAccess)
         {
-            dataAccess.RegisterTextArgument("Color", "The color of the cube in Hex Format", "#ff6700");
+            dataAccess.RegisterTextArgument("Color", "The color of the cube in Hex Format", "#FF96AD");
         }
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)

@@ -6,8 +6,8 @@
 
 <div class="top-row pl-4 mt-2 navbar navbar-dark">
     <h5>
-        <img src="https://raw.githubusercontent.com/EmilPoulsen/Hackuble/main/src/Hackuble/wwwroot/icon.png" width="30" height="30" alt="" style="filter: invert(1);">
-        <a class="navbar-brand ml-2" href="">Hakc#uble</a>
+        <img src="https://raw.githubusercontent.com/EmilPoulsen/Hackuble/main/src/Hackuble.Web/wwwroot/icon.png" width="30" height="30" alt="" style="filter: invert(1);">
+        <a class="navbar-brand ml-2" href="">Hackuble</a>
     </h5>
     <button class="navbar-toggler" @onclick=@ToggleNavMenu>
         <span class="navbar-toggler-icon"></span>
@@ -452,14 +452,14 @@ namespace Hackuble.Examples
 
         public override string CommandLineName => ""cube"";
 
-        public override string Accent => ""#77F798"";
+        public override string Accent => ""#FF96AD"";
 
         public override void RegisterInputArguments(DataAccess dataAccess)
         {
             dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20.0);
             dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20.0);
             dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20.0);
-            dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex Format"", ""#ff6700"");
+            dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex Format"", ""#FF96AD"");
         }
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
