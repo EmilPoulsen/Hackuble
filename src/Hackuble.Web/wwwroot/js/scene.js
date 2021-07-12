@@ -75,9 +75,28 @@ function addCube(x, y, z, locX, locY, locZ, color) {
     var color1 = new THREE.Color(color);
     material = new THREE.MeshBasicMaterial({ color: color1 });
     cube = new THREE.Mesh(geometry, material);
-    //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
-    cube.position.set(locX, locY, locZ);
-    scene.add(cube);
+    //cube.position.set(locX, locY, locZ);
+
+    const wireframe = new THREE.WireframeGeometry(geometry);
+
+    var wfMaterial = new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 1,
+        linecap: 'round', //ignored by WebGLRenderer
+        linejoin: 'round' //ignored by WebGLRenderer
+    });
+
+    const line = new THREE.LineSegments(wireframe, wfMaterial);
+
+    //line.position.set(locX, locY, locZ);
+
+    const group = new THREE.Group();
+    group.add(cube);
+    group.add(line);
+
+    group.position.set(locX, locY, locZ);
+
+    scene.add(group);
     console.log("Cube Added");
 }
 
