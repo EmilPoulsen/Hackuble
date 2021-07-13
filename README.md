@@ -26,14 +26,15 @@ Hackuble comes with an in-browser scripting editor, where you can write and comp
 ![Hackuble gif](gifs/hackuble-01-write-commands.gif)
 *Writing, compiling and running scripts in Hackuble.*
 
-### Commands can have parameters
+### Register command arguments to provide user input
 Commands can have input arguments, which will be presented as a modal to the user when running the script. Override the `RegisterInput` and register your input params with their type, name, description and default value. Then use the `DataAccess` object inside of the `RunCommand` method to read the input values of the parameters.  
+
 ![Hackuble gif](gifs/hackuble-02-input-parameters.gif)
 *Adding a command with custom inputs.*
 
 ### Use the Hackuble SDK to build your own script libraries (dll) in Visual Studio
-Hackuble offers an alternative way to add commands to the user interface. By using the `Hackuble.Core` dll, you can write and compile your own Hackuble plugin and upload it to the web application at runtime. The dll is then parsed and all types inheriting from `AbstractCommand` will be registered and added to the user interface. 
-Import scripts libraries (dll) by uploading it from your computer.  
+Hackuble offers an alternative way to add commands to the user interface. By importing the `Hackuble.Core` dll into your own dotnet standard library, you can write and compile your own Hackuble plugin and upload it to the web application at runtime. The dll is then parsed and all types inheriting from `AbstractCommand` will be registered and added to the user interface.  
+
 ![Hackuble gif](gifs/hackuble-03-compile-plugin.gif)
 *Compiling and uploading custom Hackuble plugin dlls from Visual Studio.*
 
@@ -46,7 +47,38 @@ Hackuble's system for adding scripts should look familiar to someone with experi
 - Each script can have a series of input parameters. These will be presented to a user through a modal in which they can specify values for the input parameters. Use the `RegisterArgument` override to add inputs.
 
 See example below:
-/// code
+```csharp
+public class AddCubeWithColorCommand : AbstractCommand
+{
+    //Override there properties to configure the command.
+    public override string Name => "Add Cube With Color";
+    public override string Author => "Emil Poulsen";
+    public override string Description => "Add a cuboid to the scene";
+    public override string CommandLineName => "cube-colors";
+    public override string Accent => "#FF96AD";
+
+    //Here's where inputs are registered
+    public override void RegisterInputArguments(DataAccess dataAccess)
+    {
+        dataAccess.RegisterTextArgument("Color", "The color of the cube in Hex Format", "#FF96AD");
+    }
+
+    //Here's the method that is called when the button is clicked.
+    public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
+    {
+        //Use the DataAccess object to read the user provided inputs registered above.
+        string c = "#ffffff";
+        if (!dataAccess.GetData<string>(0, ref c))
+        {
+            return CommandStatus.Failure;
+        }
+
+        //Use the context object to add a cube with specified color to the view port.
+        context.AddCube(20.0, 20.0, 20.0, 0, 0, 0, c);
+        return CommandStatus.Success;
+    }
+}
+```
 
 ## Tech stack
 The following key technoligies have been adopted in Hackuble: 
