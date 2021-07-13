@@ -21,17 +21,21 @@ Among other things, a major motivation for this project was the democratization 
 ## Features
 
 ### Write, compile and execute C# scripts in the browser.
+Hackuble comes with an in-browser scripting editor, where you can write and compile C# code to interact with the 3D viewport. Add your code to the `RunCommand` method and hit compile. You'll see a new button showing up which can be pressed to execute your code.
+
 ![Hackuble gif](gifs/hackuble-01-write-commands.gif)
+*Writing, compiling and running scripts in Hackuble.*
 
 ### Commands can have parameters
+Commands can have input arguments, which will be presented as a modal to the user when running the script. Override the `RegisterInput` and register your input params with their type, name, description and default value. Then use the `DataAccess` object inside of the `RunCommand` method to read the input values of the parameters.  
 ![Hackuble gif](gifs/hackuble-02-input-parameters.gif)
+*Adding a command with custom inputs.*
 
 ### Use the Hackuble SDK to build your own script libraries (dll) in Visual Studio
-Import scripts libraries (dll) by uploading it from your computer
+Hackuble offers an alternative way to add commands to the user interface. By using the `Hackuble.Core` dll, you can write and compile your own Hackuble plugin and upload it to the web application at runtime. The dll is then parsed and all types inheriting from `AbstractCommand` will be registered and added to the user interface. 
+Import scripts libraries (dll) by uploading it from your computer.  
 ![Hackuble gif](gifs/hackuble-03-compile-plugin.gif)
-
-
-
+*Compiling and uploading custom Hackuble plugin dlls from Visual Studio.*
 
 ## Create a script
 Hackuble's system for adding scripts should look familiar to someone with experience with Revit/Rhino/Grasshopper development:
