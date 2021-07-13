@@ -1,6 +1,6 @@
 # HACKUBLE
 
-![Hackuble gif](Resources\hackuble.gif) ![Hackuble icon](src/Hackuble.Web/wwwroot/icon.png)  
+![Hackuble gif](Resources/hackuble.gif) ![Hackuble icon](src/Hackuble.Web/wwwroot/icon.png)  
 *A hackable C# based script environment for 3D modeling running in the web browser.* 
 
 ## Background
