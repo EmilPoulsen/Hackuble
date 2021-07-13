@@ -1,0 +1,66 @@
+
+
+
+
+
+
+
+public void CreateThreeContext() 
+{
+
+}
+
+
+public void WrapperInfra() 
+{
+   Context context = new Context();
+   RunScript(context);
+
+   //context should have a cube! 
+   var csharpCubes = context.myCubes;
+
+}
+
+
+public void ParseContext(Context context)
+{
+  foreach(cube in context.myCubes)
+  {
+     
+  }
+}
+
+
+
+void RunScript(Context context)
+{
+   context.AddCube(3, 5);
+   
+}
+
+
+
+public class Context 
+{
+   private List<Cube> myCubes;
+   public void AddCube(double dimX, double dimY, double dimZ) 
+   {
+      var myCube = new Cube()
+      myCubes.Add(myCube);
+      
+   }
+}
+
+
+public class Cube 
+{
+   double dimX;
+   double dimY; 
+   double dimZ;
+
+   public Cube(double dimX, double dimY, double dimZ)
+   {
+      this.dimX = dimX; //etc...
+
+   }
+}
