@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackuble.Examples", "Hackub
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackuble.Web", "Hackuble.Web\Hackuble.Web.csproj", "{FE249CFD-771B-47BE-A1BE-9DBBDC2F2ACC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackuble.Win", "Hackuble.Win\Hackuble.Win.csproj", "{97AAAFD8-6AAA-48E9-96A6-25BB465FFA63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FE249CFD-771B-47BE-A1BE-9DBBDC2F2ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE249CFD-771B-47BE-A1BE-9DBBDC2F2ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE249CFD-771B-47BE-A1BE-9DBBDC2F2ACC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97AAAFD8-6AAA-48E9-96A6-25BB465FFA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97AAAFD8-6AAA-48E9-96A6-25BB465FFA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97AAAFD8-6AAA-48E9-96A6-25BB465FFA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97AAAFD8-6AAA-48E9-96A6-25BB465FFA63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
