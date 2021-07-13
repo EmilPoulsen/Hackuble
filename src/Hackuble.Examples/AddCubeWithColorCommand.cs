@@ -2,15 +2,15 @@
 
 namespace Hackuble.Examples
 {
-    public class AddCubeDef : AbstractCommand
+    public class AddCubeWithColorCommand : AbstractCommand
     {
-        public override string Name => "Add Cube";
+        public override string Name => "Add Cube (Colors)";
 
         public override string Author => "Hackathon21";
 
         public override string Description => "Add a cuboid to the scene";
 
-        public override string CommandLineName => "cubedef";
+        public override string CommandLineName => "cube-colors";
 
         public override string Accent => "#FF96AD";
 
