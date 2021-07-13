@@ -22,6 +22,11 @@ namespace Hackuble.Commands
             this.Cubes.Add(cube);
         }
 
+        public void AddCube(double x, double y, double z, double width, double depth, double height)
+        {
+            AddCube(x, y, z, width, depth, height, "#FF96AD");
+        }
+
         public void AddSphere(double r, int u, int v, string color)
         {
             Sphere sphere = new Sphere(r, u, v, color);
