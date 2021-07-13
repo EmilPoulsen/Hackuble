@@ -15,6 +15,9 @@ function createScene(reference) {
 
     scene.background = new THREE.Color(0xfafafa);
 
+    const light1 = new THREE.HemisphereLight(0xffffff, 0x888888, 1);
+    scene.add(light1);
+
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     camera.position.set(0, 0, 50);
@@ -70,20 +73,40 @@ function onDocumentMouseDown(event) {
 }
 
 function addCube(x, y, z, locX, locY, locZ, color) {
+    //Create the cube.
     var geometry = new THREE.BoxGeometry(x, y, z);
     var color1 = new THREE.Color(color);
-    material = new THREE.MeshBasicMaterial({ color: color1 });
+
+    var material = new THREE.MeshPhongMaterial({ color: color1 });
+
     cube = new THREE.Mesh(geometry, material);
-    //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
-    cube.position.set(locX, locY, locZ);
-    scene.add(cube);
-    console.log("Cube Added");
+
+    //Create edges
+    const thresholdAngle = 15;
+    var edgesGeometry = new THREE.EdgesGeometry(geometry, thresholdAngle)
+    const edgesMaterial = new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 2,
+        linecap: 'round', //ignored by WebGLRenderer
+        linejoin: 'round' //ignored by WebGLRenderer
+    });
+    const edgesMesh = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+
+    //Add the two to a group
+    const group = new THREE.Group();
+    group.add(cube);
+    group.add(edgesMesh);
+
+    //Set the set the position
+    group.position.set(locX, locY, locZ);
+
+    scene.add(group);
 }
 
 function addSphere(r, u, v, color) {
     var geometry = new THREE.SphereGeometry(r, u, v);
     var color1 = new THREE.Color(color);
-    material = new THREE.MeshBasicMaterial({ color: color1 });
+    var material = new THREE.MeshPhongMaterial({ color: color1 });
     sphere = new THREE.Mesh(geometry, material);
     //cube.callback = function () { caller.invokeMethodAsync('OnClickCube', cube); };
     scene.add(sphere);
@@ -111,6 +134,30 @@ function clickCube() {
     cube.material = new THREE.MeshBasicMaterial({ color: getRandomColor() });
 }
 
+function loadCodeEditor(dontNetObjRef) {
+    var codemirrorEditor = CodeMirror.fromTextArea(document.getElementById('exampleFormControlTextarea1'), {
+        lineNumbers: true,
+        autoRefresh: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        mode: "text/x-csharp",
+        extraKeys: {
+            "F11": function (cm) {
+                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+            },
+            "Esc": function (cm) {
+                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+            }
+        }
+    });
+    codemirrorEditor.refresh();
+    //codemirrorEditor.setSize(900, 500);
+    codemirrorEditor.on("change", editor => {
+        dontNetObjRef.invokeMethodAsync("UpdateField", editor.getValue());
+        console.log(editor.getValue());
+    });
+}
+
 function clearScene() {
 
     var tempList = [];
@@ -121,8 +168,8 @@ function clearScene() {
 
     for (var i = 0; i < tempList.length; i++) {
         var currObj = tempList[i];
-
-        if (currObj.name != "GridHelper") {
+        //avoid deleting the gridhelper and the light
+        if (!(currObj.name == "GridHelper" || currObj.type == "HemisphereLight")) {
             scene.remove(currObj);
         }
     }
@@ -145,3 +192,7 @@ var animate = function() {
     //cube.rotation.y += 0.01;
     renderer.render(scene, camera);
 };
+
+function clickFileUpload() {
+    document.getElementById("upload-library").click();
+}

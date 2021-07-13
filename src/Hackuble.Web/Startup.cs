@@ -11,7 +11,7 @@ namespace Hackuble.Web
             services.AddSingleton<CompileService>();
             services.AddSingleton<CommandService>();
             services.AddSingleton<LoaderService>();
-            services.AddSingleton<Context>();
+            //services.AddSingleton<Context>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

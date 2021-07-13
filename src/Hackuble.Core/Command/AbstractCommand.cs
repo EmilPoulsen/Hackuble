@@ -13,10 +13,10 @@ namespace Hackuble.Commands
         }
 
         public abstract string Name { get; }
-        public abstract string Author { get; }
-        public abstract string Description { get; }
-        public abstract string Accent { get; }
-        public abstract void RegisterInputArguments(DataAccess dataAccess);
+        public virtual string Author => "Unkown";
+        public virtual string Description => "";
+        public virtual string Accent => "#FF96AD";
+        public virtual void RegisterInputArguments(DataAccess dataAccess) { }
         public abstract string CommandLineName { get; }
         public abstract CommandStatus RunCommand(Context context, DataAccess dataAccess);
     }

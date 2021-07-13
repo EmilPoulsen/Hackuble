@@ -12,7 +12,7 @@ namespace Hackuble.Examples
 
         public override string CommandLineName => "addbuilding";
 
-        public override string Accent => "#D4C966";
+        public override string Accent => "#FF96AD";
 
         public override void RegisterInputArguments(DataAccess dataAccess)
         {

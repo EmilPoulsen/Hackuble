@@ -1,13 +1,12 @@
 ﻿@inject CompileService service;
 @inject CommandService commandService;
-@inject Context CurrentContext;
 @inject LoaderService loadService;
-
+@inject IJSRuntime JSRuntime;
 
 <div class="top-row pl-4 mt-2 navbar navbar-dark">
     <h5>
-        <img src="https://raw.githubusercontent.com/EmilPoulsen/Hackuble/main/src/Hackuble/wwwroot/icon.png" width="30" height="30" alt="" style="filter: invert(1);">
-        <a class="navbar-brand ml-2" href="">Hakc#uble</a>
+        <img src="https://raw.githubusercontent.com/EmilPoulsen/Hackuble/main/src/Hackuble.Web/wwwroot/icon.png" width="30" height="30" alt="" style="filter: invert(1);">
+        <a class="navbar-brand ml-2" href="">Hackuble</a>
     </h5>
     <button class="navbar-toggler" @onclick=@ToggleNavMenu>
         <span class="navbar-toggler-icon"></span>
@@ -60,10 +59,12 @@
         <button class="btn btn-primary btn-block" @onclick="launchCommandEditor" style="height:44px">New Command</button>
     </div>
 
+
     <div class="d-flex mt-1 px-4">
         @*<button class="btn btn-primary mx-auto" @onclick="launchCommandEditor">New Command</button>*@
-        <InputFile class="btn btn-primary" OnChange="HandleSelection" />
+        <button class="btn btn-primary btn-block" @onclick="ClickFileUpload" style="height:44px">Load Library</button>
     </div>
+    <InputFile id="upload-library" style="display:none" OnChange="HandleSelection" />
 
 
 
@@ -139,7 +140,7 @@
 
 
     <div class="modal @ModalClass overflow-auto" tabindex="-1" role="dialog" style="display:@ModalDisplay;">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Create New Command</h5>
@@ -165,13 +166,12 @@
                     <hr>
 
 
-                    <label for="command">Command</label>
+                    @*<label for="command">Command</label>
                     <textarea class="form-control" id="command" rows="3" @bind="@CommandJSON"></textarea>
                     <button type="button" class="btn btn-primary" @onclick="RunDebug">Run</button><br />
 
                     <hr>
-                    <button type="button" class="btn btn-primary" @onclick="AddToToolbar">Add to toolbar</button><br />
-                    <pre class="overflow-auto" style="height:50px">@ResultText</pre>
+                    <pre class="overflow-auto" style="height:50px">@ResultText</pre>*@
 
 
                     @*<div class="card">
@@ -189,6 +189,7 @@
                 <div class="modal-footer">
                     @*<button type="button" class="btn btn-primary">Save changes</button>*@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="AddToToolbar">Add to toolbar</button><br />
                 </div>
             </div>
         </div>
@@ -206,6 +207,30 @@
 
 
 @functions {
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+                    await JSRuntime.InvokeAsync<object>
+            ("loadCodeEditor", new object[] { DotNetObjectReference.Create(this) });
+        }
+    }
+
+    [JSInvokable("UpdateField")]
+    public Task UpdateField(string codeValue)
+    {
+        CsCode = codeValue;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    public async void ClickFileUpload()
+    {
+        await JSRuntime.InvokeAsync<object>
+    ("clickFileUpload", new object[] { });
+
+    }
+
     string status;
 
     async Task HandleSelection(IFileListEntry[] files)
@@ -321,6 +346,7 @@ public void Close()
     ModalDisplay = "none";
     ModalClass = "";
     ShowBackdrop = false;
+    CompileText = string.Empty;
     StateHasChanged();
 }
 
@@ -345,7 +371,8 @@ public void ProceedRunCommand()
     var command = currentCommand;
     var dataAccess = currentDataAccess;
 
-    commandService.RunCommand(command, CurrentContext, dataAccess);
+    var context = new Context();
+    commandService.RunCommand(command, context, dataAccess);
 
     //System.Diagnostics.Trace.WriteLine($"Running command {command.Name}");
     CloseCommandModal();
@@ -385,7 +412,8 @@ public void RunDebug()
         AddToToolbar();
         if (!string.IsNullOrEmpty(CommandJSON))
         {
-            commandService.RunJSONCommand(CommandJSON, CurrentContext);
+            var context = new Context();
+            commandService.RunJSONCommand(CommandJSON, context);
             ResultText = "";
         }
         else throw new Exception("No Command");
@@ -431,6 +459,7 @@ public void AddToToolbar()
     finally
     {
         CompileText = string.Join("\r\n", service.CompileLog);
+        Close();
         this.StateHasChanged();
     }
 }
@@ -442,51 +471,15 @@ using Hackuble.Commands;
 
 namespace Hackuble.Examples
 {
-    public class AddCube : AbstractCommand
+    public class AddCubeCommand : AbstractCommand
     {
-        public override string Name => ""Add Cube"";
+        public override string Name => ""MyCommand"";
 
-        public override string Author => ""Hackathon21"";
-
-        public override string Description => ""Add a cuboid to the scene"";
-
-        public override string CommandLineName => ""cube"";
-
-        public override string Accent => ""#77F798"";
-
-        public override void RegisterInputArguments(DataAccess dataAccess)
-        {
-            dataAccess.RegisterNumberArgument(""Size X"", ""The size of the cube in X direction"", 20.0);
-            dataAccess.RegisterNumberArgument(""Size Y"", ""The size of the cube in Y direction"", 20.0);
-            dataAccess.RegisterNumberArgument(""Size Z"", ""The size of the cube in Z direction"", 20.0);
-            dataAccess.RegisterTextArgument(""Color"", ""The color of the cube in Hex Format"", ""#ff6700"");
-        }
+        public override string CommandLineName => ""command"";
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
         {
-            double x = -1;
-            double y = -1;
-            double z = -1;
-            string c = ""#ffffff"";
-            if (!dataAccess.GetData<double>(0, ref x))
-            {
-                return CommandStatus.Failure;
-            }
-            if (!dataAccess.GetData<double>(1, ref y))
-            {
-                return CommandStatus.Failure;
-            }
-            if (!dataAccess.GetData<double>(2, ref z))
-            {
-                return CommandStatus.Failure;
-            }
-            if (!dataAccess.GetData<string>(3, ref c))
-            {
-                return CommandStatus.Failure;
-            }
-
-            context.AddCube(x, y, z, 0, 0, 0, c);
-            return CommandStatus.Success;
+            //Add C# code here
         }
     }
 }
