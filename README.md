@@ -7,9 +7,9 @@ Script based 3D modeling software running in the web browser typically requires 
 Hackuble is a generative 3D modeling environment built to write and execute C# code in the browser. Scripts can either be authored in the application, or brought in by loading compiled .NET dlls. The scripts can manipulate the 3D scene, such as adding objects. Each script becomes a button, which can be executed later on.
 
 ## Context
-This project was developed in the context of the [CORE studio Thornton Tomasetti](http://core.thorntontomasetti.com/) [AEC Summer Hackathon 2021](https://www.aectech.us/). The team consisted of the following people:
+This project was initially developed in the context of the [CORE studio Thornton Tomasetti](http://core.thorntontomasetti.com/) [AEC Summer Hackathon 2021](https://www.aectech.us/). The team consisted of the following people:
 - [Emil Poulsen](https://github.com/EmilPoulsen) [TT CORE Studio // Stockholm]
-- [Praneet Mathur](https://github.com/pm-Architect) [ARPM Design and Research // India]
+- [Praneet Mathur](https://github.com/pm-Architect) [[ARPM Design and Research](https://arpmdesignandresearch.com) // India]
 - [Hanshen Sun](https://github.com/hanshenSun) [TT CORE Studio // New York]
 - [Yankun Yang](https://github.com/simpleSketche) [iBuilt Group // New York]
 - [Yushi Kato](https://github.com/YKato521) [Turner & Townsend // Japan]
