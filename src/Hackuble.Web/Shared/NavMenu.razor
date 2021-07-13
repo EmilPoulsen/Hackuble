@@ -167,11 +167,11 @@
 
 
                     @*<label for="command">Command</label>
-                        <textarea class="form-control" id="command" rows="3" @bind="@CommandJSON"></textarea>
-                        <button type="button" class="btn btn-primary" @onclick="RunDebug">Run</button><br />
+                    <textarea class="form-control" id="command" rows="3" @bind="@CommandJSON"></textarea>
+                    <button type="button" class="btn btn-primary" @onclick="RunDebug">Run</button><br />
 
-                        <hr>
-                        <pre class="overflow-auto" style="height:50px">@ResultText</pre>*@
+                    <hr>
+                    <pre class="overflow-auto" style="height:50px">@ResultText</pre>*@
 
 
                     @*<div class="card">
@@ -207,108 +207,108 @@
 
 
 @functions {
-protected async override void OnAfterRender(bool firstRender)
-{
-    if (firstRender)
+    protected async override void OnAfterRender(bool firstRender)
     {
-        await JSRuntime.InvokeAsync<object>
-("loadCodeEditor", new object[] { DotNetObjectReference.Create(this) });
-    }
-}
-
-[JSInvokable("UpdateField")]
-public Task UpdateField(string codeValue)
-{
-    CsCode = codeValue;
-    StateHasChanged();
-    return Task.CompletedTask;
-}
-
-public async void ClickFileUpload()
-{
-    await JSRuntime.InvokeAsync<object>
-("clickFileUpload", new object[] { });
-
-}
-
-string status;
-
-async Task HandleSelection(IFileListEntry[] files)
-{
-    System.Diagnostics.Trace.WriteLine("HandleSelection called!");
-
-    var file = files.FirstOrDefault();
-    if (file != null)
-    {
-        // Just load into .NET memory to show it can be done
-        // Alternatively it could be saved to disk, or parsed in memory, or similar
-        var ms = new System.IO.MemoryStream();
-        await file.Data.CopyToAsync(ms);
-
-        status = $"Finished loading {file.Size} bytes from {file.Name}";
-        System.Diagnostics.Trace.WriteLine(status);
-
-        var loadedCommands = loadService.Load(ms);
-
-        foreach (var loadedCommand in loadedCommands)
+        if (firstRender)
         {
-            commandService.AddCommand(loadedCommand);
+                    await JSRuntime.InvokeAsync<object>
+            ("loadCodeEditor", new object[] { DotNetObjectReference.Create(this) });
         }
     }
-}
 
-DataAccess currentDataAccess;
-AbstractCommand currentCommand;
-
-void RunCommand(AbstractCommand command)
-{
-    //var dataAccess = PresentCommandUserInterface(command);
-    currentDataAccess = new DataAccess();
-    currentCommand = command;
-    command.RegisterInputArguments(currentDataAccess);
-
-    if (currentDataAccess.Arguments.Count == 0)
+    [JSInvokable("UpdateField")]
+    public Task UpdateField(string codeValue)
     {
-        ProceedRunCommand();
-    }
-    else
-    {
-        PresentCommandUserInterface(currentDataAccess);
+        CsCode = codeValue;
+        StateHasChanged();
+        return Task.CompletedTask;
     }
 
+    public async void ClickFileUpload()
+    {
+        await JSRuntime.InvokeAsync<object>
+    ("clickFileUpload", new object[] { });
 
-}
+    }
 
-void ClearExistingCommands()
-{
-    commandService.Commands.Clear();
-    StateHasChanged();
-}
+    string status;
+
+    async Task HandleSelection(IFileListEntry[] files)
+    {
+        System.Diagnostics.Trace.WriteLine("HandleSelection called!");
+
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            // Just load into .NET memory to show it can be done
+            // Alternatively it could be saved to disk, or parsed in memory, or similar
+            var ms = new System.IO.MemoryStream();
+            await file.Data.CopyToAsync(ms);
+
+            status = $"Finished loading {file.Size} bytes from {file.Name}";
+            System.Diagnostics.Trace.WriteLine(status);
+
+            var loadedCommands = loadService.Load(ms);
+
+            foreach (var loadedCommand in loadedCommands)
+            {
+                commandService.AddCommand(loadedCommand);
+            }
+        }
+    }
+
+    DataAccess currentDataAccess;
+    AbstractCommand currentCommand;
+
+    void RunCommand(AbstractCommand command)
+    {
+        //var dataAccess = PresentCommandUserInterface(command);
+        currentDataAccess = new DataAccess();
+        currentCommand = command;
+        command.RegisterInputArguments(currentDataAccess);
+
+        if (currentDataAccess.Arguments.Count == 0)
+        {
+            ProceedRunCommand();
+        }
+        else
+        {
+            PresentCommandUserInterface(currentDataAccess);
+        }
 
 
-DataAccess PresentCommandUserInterface(DataAccess dataAccess)
-{
-    System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
+    }
 
-    //foreach (var argument in dataAccess.Arguments)
-    //{
-
-    //}
-    LaunchCommandRunner();
-    //foreach (var argument in command.Arguments)
-    //{
-    //    string name = argument.Prompt;
-    //    string description = argument.Prompt;
+    void ClearExistingCommands()
+    {
+        commandService.Commands.Clear();
+        StateHasChanged();
+    }
 
 
+    DataAccess PresentCommandUserInterface(DataAccess dataAccess)
+    {
+        System.Diagnostics.Trace.WriteLine($"Number of inputs: {dataAccess.Arguments.Count}");
 
-    //}
+        //foreach (var argument in dataAccess.Arguments)
+        //{
+
+        //}
+        LaunchCommandRunner();
+        //foreach (var argument in command.Arguments)
+        //{
+        //    string name = argument.Prompt;
+        //    string description = argument.Prompt;
 
 
-    return null;
-}
 
-bool collapseNavMenu = true;
+        //}
+
+
+        return null;
+    }
+
+    bool collapseNavMenu = true;
 
 
 
