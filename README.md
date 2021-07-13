@@ -20,11 +20,18 @@ Among other things, a major motivation for this project was the democratization 
 
 ## Features
 
-Write, compile and execute C# scripts in the browser.
+### Write, compile and execute C# scripts in the browser.
+![Hackuble gif](gifs/hackuble-01-write-commands.gif)
 
-Use the Hackuble SDK to build your own script libraries (dll) in Visual Studio 
+### Commands can have parameters
+![Hackuble gif](gifs/hackuble-02-input-parameters.gif)
 
+### Use the Hackuble SDK to build your own script libraries (dll) in Visual Studio
 Import scripts libraries (dll) by uploading it from your computer
+![Hackuble gif](gifs/hackuble-03-compile-plugin.gif)
+
+
+
 
 ## Create a script
 Hackuble's system for adding scripts should look familiar to someone with experience with Revit/Rhino/Grasshopper development:
