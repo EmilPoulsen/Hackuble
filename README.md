@@ -1,5 +1,3 @@
-# HACKUBLE
-
 ![Hackuble gif](Resources/hackuble.gif) ![Hackuble icon](src/Hackuble.Web/wwwroot/icon.png)  
 *A hackable C# based script environment for 3D modeling running in the web browser.* 
 
@@ -37,6 +35,24 @@ Hackuble offers an alternative way to add commands to the user interface. By imp
 
 ![Hackuble gif](gifs/hackuble-03-compile-plugin.gif)
 *Compiling and uploading custom Hackuble plugin dlls from Visual Studio.*
+
+## Getting started
+### Prerequisites
+* Latest version of VisualStudio 2019 [link](https://visualstudio.microsoft.com/downloads/)
+
+### Installation
+1. clone the repo
+
+```sh
+git clone https://github.com/EmilPoulsen/AecHackBlazor.git
+```
+
+2. open `Hackuble.sln`
+3. Compile the `Hackuble.Examples` project.
+4. Set the `Hackbule.Web` project to start up and hit the debug button.
+5. Once the application is started, click on the "Load Library" button on the side bar. Locate the `Hackuble.Examples.dll` in the output from step 3 and select it.
+6. You should see buttons showing up in the sidebar.
+7. Clicking on one of those
 
 ## Create a script
 Hackuble's system for adding scripts should look familiar to someone with experience with Revit/Rhino/Grasshopper development:
@@ -81,35 +97,20 @@ public class AddCubeWithColorCommand : AbstractCommand
 ```
 
 ## Tech stack
-The following key technoligies have been adopted in Hackuble: 
+The following key technologies have been adopted in Hackuble: 
 - Blazor WebAssembly
 - Three.js
 - CodeMirror
 
-Note that Hackuble is a front-end only application, meaning there is no need for a back-end. This is possible through Blazor and WebAssembly.
+Note that Hackuble is a front-end only application, meaning there is no need for a back-end. This is possible through Blazor and WebAssembly! 
 
-## Getting started
-### Prerequisites
-* Latest version of VisualStudio 2019 [link](https://visualstudio.microsoft.com/downloads/)
-
-### Installation
-1. clone the repo
-
-```sh
-git clone https://github.com/EmilPoulsen/AecHackBlazor.git
-```
-
-2. open `Hackuble.sln`
-3. Compile the `Hackuble.Examples` project.
-4. Set the `Hackbule.Web` project to start up and hit the debug button.
-5. Once the application is started, click on the "Load Library" button on the side bar. Locate the `Hackuble.Examples.dll` in the output from step 3 and select it.
-6. You should see buttons showing up in the sidebar.
-7. Clicking on one of those
-
-## Create Command
-you can choose the 2 options.
-1. Upload `.dll` file from your local as described above.
-2. Create your own custom command from your browser. hit `New Command`
+## Road map
+- Extend the functionality of the `Context` object to better reflect the state of the three.js scene.
+- Web-based Visual Scripting Interface for Chaining Commands and Faster Parametric Design
+- Integration + Interop with p5.js, ml5.js, and more
+- Integration + Interop with ShapeDiver, Rhino.Compute and more
+- One-click Deployment packages for local on-premise installation as well as cloud instances
+- Multi-platform ‘sister’ environments for interop with the likes of Unity, UE4 and more
 
 ## License
-![](https://github.com/EmilPoulsen/AecHackBlazor/blob/main/gifs/demo-gif-01.gif)
+[MIT](LICENSE)
