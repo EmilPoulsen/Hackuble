@@ -134,9 +134,28 @@ function clickCube() {
     cube.material = new THREE.MeshBasicMaterial({ color: getRandomColor() });
 }
 
-function enableCodeMirror() {
-    var myTextArea = document.getElementById("exampleFormControlTextarea1");
-    var myCodeMirror = CodeMirror.fromTextArea(myTextArea);
+function loadCodeEditor(dontNetObjRef) {
+    var codemirrorEditor = CodeMirror.fromTextArea(document.getElementById('exampleFormControlTextarea1'), {
+        lineNumbers: true,
+        autoRefresh: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        mode: "text/x-csharp",
+        extraKeys: {
+            "F11": function (cm) {
+                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+            },
+            "Esc": function (cm) {
+                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+            }
+        }
+    });
+    codemirrorEditor.refresh();
+    //codemirrorEditor.setSize(900, 500);
+    codemirrorEditor.on("change", editor => {
+        dontNetObjRef.invokeMethodAsync("UpdateField", editor.getValue());
+        console.log(editor.getValue());
+    });
 }
 
 function clearScene() {

@@ -207,6 +207,23 @@
 
 
 @functions {
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+                    await JSRuntime.InvokeAsync<object>
+            ("loadCodeEditor", new object[] { DotNetObjectReference.Create(this) });
+        }
+    }
+
+    [JSInvokable("UpdateField")]
+    public Task UpdateField(string codeValue)
+    {
+        CsCode = codeValue;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
     public async void ClickFileUpload()
     {
         await JSRuntime.InvokeAsync<object>
