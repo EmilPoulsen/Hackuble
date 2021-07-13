@@ -29,6 +29,7 @@ namespace Hackuble.Win
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ThreeD_Viewport));
             this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
             this.SuspendLayout();
             // 
@@ -48,6 +49,7 @@ namespace Hackuble.Win
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.chromiumWebBrowser1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ThreeD_Viewport";
             this.Text = "ThreeD_Viewport";
             this.Load += new System.EventHandler(this.ThreeD_Viewport_Load);

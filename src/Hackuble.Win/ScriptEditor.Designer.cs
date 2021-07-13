@@ -29,6 +29,7 @@ namespace Hackuble.Win
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptEditor));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.opencsScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,10 +38,14 @@ namespace Hackuble.Win
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -71,17 +76,21 @@ namespace Hackuble.Win
             // opencsScriptToolStripMenuItem
             // 
             this.opencsScriptToolStripMenuItem.Name = "opencsScriptToolStripMenuItem";
-            this.opencsScriptToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.opencsScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.opencsScriptToolStripMenuItem.Text = "&Open .cs Script";
             // 
             // savecsScriptToolStripMenuItem
             // 
             this.savecsScriptToolStripMenuItem.Name = "savecsScriptToolStripMenuItem";
-            this.savecsScriptToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.savecsScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.savecsScriptToolStripMenuItem.Text = "&Save .cs Script";
             // 
             // toolStrip1
             // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton2,
+            this.toolStripButton1,
+            this.toolStripButton3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(742, 25);
@@ -121,19 +130,8 @@ namespace Hackuble.Win
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(734, 185);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Output";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.richTextBox2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(734, 185);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // richTextBox1
             // 
@@ -149,6 +147,17 @@ namespace Hackuble.Win
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.richTextBox2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(734, 185);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Console";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // richTextBox2
             // 
             this.richTextBox2.BackColor = System.Drawing.Color.Black;
@@ -163,6 +172,30 @@ namespace Hackuble.Win
             this.richTextBox2.TabIndex = 1;
             this.richTextBox2.Text = "";
             // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(56, 22);
+            this.toolStripButton2.Text = "Compile";
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(89, 22);
+            this.toolStripButton3.Text = "Add to Toolbar";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(46, 22);
+            this.toolStripButton1.Text = "Debug";
+            // 
             // ScriptEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -171,6 +204,7 @@ namespace Hackuble.Win
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ScriptEditor";
             this.Text = "ScriptEditor";
@@ -178,6 +212,8 @@ namespace Hackuble.Win
             this.Load += new System.EventHandler(this.ScriptEditor_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -202,5 +238,8 @@ namespace Hackuble.Win
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
