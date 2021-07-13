@@ -1,5 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using Hackuble.Commands;
+using Hackuble.Win.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +11,12 @@ using System.Windows.Forms;
 
 namespace Hackuble.Win
 {
-    public static class Program
+    public static class Hackuble
     {
+        internal static CompileHelper compileService;
+        internal static CommandHelper commandService;
+        internal static LoaderHelper loadService;
+        internal static Context CurrentContext;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -49,7 +55,7 @@ namespace Hackuble.Win
             //Start Application GUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Hackuble.Win.Main());
+            Application.Run(new global::Hackuble.Win.Main());
         }
     }
 }

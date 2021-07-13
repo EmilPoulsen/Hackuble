@@ -1,4 +1,5 @@
-﻿using ScintillaNET;
+﻿using Hackuble.Commands;
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,8 +16,15 @@ namespace Hackuble.Win
 {
 
 	public partial class ScriptEditor : Form
-    {
-        public ScriptEditor()
+	{
+		string CsCode { get; set; }
+		string CompileText { get; set; }
+		string ResultText { get; set; }
+		Type CompiledType { get; set; }
+		string CommandJSON { get; set; }
+
+
+		public ScriptEditor()
         {
             InitializeComponent();
 		}
@@ -275,5 +283,89 @@ namespace Hackuble.Win
         {
 			AutoCompleteCs.Dispose();
 		}
-    }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+			Compile();
+		}
+
+		public void Compile()
+		{
+			try
+			{
+				Hackuble.compileService.CompileLog = new List<string>();
+				CompiledType = Hackuble.compileService.CompileOnly(CsCode);
+			}
+			catch (Exception e)
+			{
+				Hackuble.compileService.CompileLog.Add(e.Message);
+				Hackuble.compileService.CompileLog.Add(e.StackTrace);
+				throw;
+			}
+			finally
+			{
+				CompileText = string.Join("\r\n", Hackuble.compileService.CompileLog);
+				//this.StateHasChanged();
+			}
+		}
+
+		public void RunDebug()
+		{
+			System.Diagnostics.Trace.WriteLine("Hello from Run method!");
+			if (CompiledType == null) return;
+			try
+			{
+				AddToToolbar();
+				if (!string.IsNullOrEmpty(CommandJSON))
+				{
+					Hackuble.commandService.RunJSONCommand(CommandJSON, Hackuble.CurrentContext);
+					ResultText = "";
+				}
+				else throw new Exception("No Command");
+			}
+			catch (Exception e)
+			{
+				Hackuble.compileService.CompileLog.Add(e.Message);
+				Hackuble.compileService.CompileLog.Add(e.StackTrace);
+				throw;
+			}
+			finally
+			{
+				CompileText = string.Join("\r\n", Hackuble.compileService.CompileLog);
+				//this.StateHasChanged();
+			}
+		}
+
+		public void AddToToolbar()
+		{
+			System.Diagnostics.Trace.WriteLine("Hello from AddtoToolbar method!");
+			if (CompiledType == null) return;
+			try
+			{
+				var instance = Hackuble.compileService.CreateRunClass(CompiledType);
+				for (var i = 0; i < Hackuble.commandService.Commands.Count; i++)
+				{
+					AbstractCommand c = Hackuble.commandService.Commands[i];
+					if (c.CommandLineName == instance.CommandLineName)
+					{
+						System.Diagnostics.Trace.WriteLine($"Command already exists! Replacing {c.CommandLineName}");
+						Hackuble.commandService.Commands[i] = instance;
+						return;
+					}
+				}
+				Hackuble.commandService.AddCommand(instance);
+			}
+			catch (Exception e)
+			{
+				Hackuble.compileService.CompileLog.Add(e.Message);
+				Hackuble.compileService.CompileLog.Add(e.StackTrace);
+				throw;
+			}
+			finally
+			{
+				CompileText = string.Join("\r\n", Hackuble.compileService.CompileLog);
+				//this.StateHasChanged();
+			}
+		}
+	}
 }

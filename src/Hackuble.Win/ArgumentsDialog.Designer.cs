@@ -36,8 +36,8 @@ namespace Hackuble.Win
             this.button2 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.scintilla1 = new ScintillaNET.Scintilla();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -119,17 +119,6 @@ namespace Hackuble.Win
             this.tabPage1.Text = "GUI Parameters";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.scintilla1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(399, 228);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "JSON";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
@@ -141,6 +130,17 @@ namespace Hackuble.Win
             this.flowLayoutPanel1.TabIndex = 2;
             this.flowLayoutPanel1.WrapContents = false;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.scintilla1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(399, 228);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "JSON";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // scintilla1
             // 
             this.scintilla1.AutoCMaxHeight = 9;
@@ -148,11 +148,11 @@ namespace Hackuble.Win
             this.scintilla1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scintilla1.Location = new System.Drawing.Point(3, 3);
             this.scintilla1.Name = "scintilla1";
-            this.scintilla1.ScrollWidth = 49;
+            this.scintilla1.ScrollWidth = 112;
             this.scintilla1.Size = new System.Drawing.Size(393, 222);
             this.scintilla1.TabIndents = true;
             this.scintilla1.TabIndex = 0;
-            this.scintilla1.Text = "scintilla1";
+            this.scintilla1.Text = "{\"command\":\"\",\r\n    \"data\":[\r\n\r\n    ]\r\n}";
             this.scintilla1.UseRightToLeftReadingLayout = false;
             this.scintilla1.WrapMode = ScintillaNET.WrapMode.None;
             // 
@@ -170,6 +170,7 @@ namespace Hackuble.Win
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ArgumentsDialog";
+            this.Load += new System.EventHandler(this.ArgumentsDialog_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
