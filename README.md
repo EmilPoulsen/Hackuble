@@ -44,7 +44,7 @@ Hackuble offers an alternative way to add command buttons to the user interface.
 1. clone the repo
 
 ```sh
-git clone https://github.com/EmilPoulsen/AecHackBlazor.git
+git clone https://github.com/EmilPoulsen/Hackuble.git
 ```
 
 2. Open `Hackuble.sln`
