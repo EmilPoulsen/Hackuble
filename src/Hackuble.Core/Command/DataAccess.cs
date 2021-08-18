@@ -29,6 +29,11 @@ namespace Hackuble.Commands
             this.Arguments.Add(new TextArgument(name, description, defaultValue));
         }
 
+        public void RegisterBooleanArgument(string name, string description, bool defaultValue)
+        {
+            this.Arguments.Add(new BooleanArgument(name, description, defaultValue));
+        }
+
         public bool GetData<T>(int index, ref T data)
         {
             if (index < this.Arguments.Count)
