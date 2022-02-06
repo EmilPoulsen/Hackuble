@@ -124,6 +124,18 @@
                                             <input class="form-control" @bind="textArg.CurrentValue" type="text" />
                                         </div>
                                     }
+                                    else if (arg is BooleanArgument)
+                                    {
+                                        var boolArg = arg as BooleanArgument;
+
+                                        <div class="d-flex my-1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">@arg.Prompt</span>
+                                            </div>
+                                            @*<label>@arg.Prompt</label>*@
+                                            <input class="form-control" @bind="boolArg.CurrentValue" type="checkbox" />
+                                        </div>
+                                    }
                                 }
                             }
                         }
