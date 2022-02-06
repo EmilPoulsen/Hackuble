@@ -13,7 +13,7 @@ namespace Hackuble.Examples
 
         public override string Description => "Place new building in the scene";
 
-        public override string CommandLineName => "addBuilding";
+        public override string CommandLineName => "addBuildingWithStairCase";
 
         public override string Accent => "#988F64"; //"#FF96AD"
 
