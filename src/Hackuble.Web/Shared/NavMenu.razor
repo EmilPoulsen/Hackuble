@@ -127,13 +127,13 @@
                                     else if (arg is BooleanArgument)
                                     {
                                         var boolArg = arg as BooleanArgument;
-
-                                        <div class="d-flex my-1">
-                                            <div class="input-group-prepend">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend" style="min-width:50px">
                                                 <span class="input-group-text">@arg.Prompt</span>
                                             </div>
-                                            @*<label>@arg.Prompt</label>*@
-                                            <input class="form-control" @bind="boolArg.CurrentValue" type="checkbox" />
+                                            <div class="form-control" style="max-width:40px">
+                                                <input type="checkbox" @bind="boolArg.CurrentValue">
+                                            </div>
                                         </div>
                                     }
                                 }
