@@ -117,7 +117,7 @@
                                         var textArg = arg as TextArgument;
 
                                         <div class="d-flex my-1">
-                                            <div class="input-group-prepend" style="min-width:50px">
+                                            <div class="input-group-prepend">
                                                 <span class="input-group-text">@arg.Prompt</span>
                                             </div>
                                             @*<label>@arg.Prompt</label>*@
@@ -133,6 +133,18 @@
                                             </div>
                                             <div class="form-control" style="max-width:40px">
                                                 <input type="checkbox" @bind="boolArg.CurrentValue">
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (arg is RangeArgument)
+                                    {
+                                        var rangeArg = arg as RangeArgument;
+                                        <div class="d-flex my-1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">@arg.Prompt: @rangeArg.CurrentValue</span>
+                                            </div>
+                                            <div class="form-control">
+                                                <input type="range" @bind="rangeArg.CurrentValue" min="@rangeArg.MinValue." max="@rangeArg.MaxValue" />
                                             </div>
                                         </div>
                                     }
