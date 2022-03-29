@@ -13,7 +13,8 @@ namespace Hackuble.Examples
 
         public override CommandStatus RunCommand(Context context, DataAccess dataAccess)
         {
-            context.AddCube(20, 20, 20, 0, 0, 0, "#FF96AD");
+            //context.AddCube(20, 20, 20, 0, 0, 0, "#FF96AD");
+            context.AddCube(0, 0, 0, 20, 20, 20, "#FF96AD");
             return CommandStatus.Success;
         }
     }

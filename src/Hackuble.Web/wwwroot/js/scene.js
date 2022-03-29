@@ -10,6 +10,7 @@ var controls;
 
 function createScene(reference) {
     //window.addEventListener('click', onDocumentMouseDown, false);
+    window.addEventListener('dblclick', onDocumentMouseDown, false);
     caller = reference;
     scene = new THREE.Scene();
 
@@ -63,18 +64,21 @@ function onDocumentMouseDown(event) {
     var intersects = raycaster.intersectObjects(scene.children);
 
     if (intersects.length > 0) {
-        intersects.forEach(x => {
+        for (let i = 0; i < intersects.length; i++) {
+            intersects[i].object.material.color.set(0xff0000);
+        }
+        /*intersects.forEach(x => {
             if (x.object.callback) {
                 x.object.callback();
             }
-        });
+        });*/
 
     }
 }
 
-function addCube(x, y, z, locX, locY, locZ, color) {
+function addCube(locX, locY, locZ, width, height, depth, color) {
     //Create the cube.
-    var geometry = new THREE.BoxGeometry(x, y, z);
+    var geometry = new THREE.BoxGeometry(width, height, depth);
     var color1 = new THREE.Color(color);
 
     var material = new THREE.MeshPhongMaterial({ color: color1 });
