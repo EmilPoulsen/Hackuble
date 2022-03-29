@@ -45,7 +45,7 @@ namespace Hackuble.Examples
                 return CommandStatus.Failure;
             }
 
-            context.AddCube(x, y, z, 0, 0, 0, c);
+            context.AddCube(0, 0, 0, x, y, z, c);
             return CommandStatus.Success;
         }
     }

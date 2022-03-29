@@ -54,7 +54,7 @@ namespace Hackuble.Examples
             double currElev = flfl;
             for (int i = 0; i < numStoriesInt; i++)
             {
-                context.AddCube(baseX, baseY, 0.5, 0, 0, currElev, "#0390fc");
+                context.AddCube(0, 0, currElev, baseX, baseY, 0.5, "#0390fc");
                 currElev += flfl;
             }
 

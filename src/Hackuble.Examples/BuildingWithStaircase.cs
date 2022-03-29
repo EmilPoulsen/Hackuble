@@ -62,15 +62,13 @@ namespace Hackuble.Examples
             double slabT = 0.3; //slab thickness
             for (int i = 0; i < numFloors; i++)
             {
-                context.AddCube(baseX, baseY, slabT, 0, 0, currElev + slabT, "#0390fc");
-                //context.AddCube(0, 0, currElev + slabT, baseX, baseY, slabT, "#0390fc");
+                context.AddCube(0, 0, currElev + slabT, baseX, baseY, slabT, "#0390fc");
                 currElev += fc;
             }
 
             if (stairs)
             {
-                context.AddCube(6, 3, numFloors * (fc + slabT), 0, 0, numFloors * (fc + slabT) /2, "#0390fc");
-                //context.AddCube(0, 0, numFloors * (fc + slabT) / 2, 6, 3, numFloors * (fc + slabT), "#0390fc");
+                context.AddCube(0, 0, numFloors * (fc + slabT) / 2, 6, 3, numFloors * (fc + slabT), "#0390fc");
             }
 
             return CommandStatus.Success;
