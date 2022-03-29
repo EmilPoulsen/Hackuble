@@ -34,6 +34,11 @@ namespace Hackuble.Commands
             this.Arguments.Add(new BooleanArgument(name, description, defaultValue));
         }
 
+        public void RegisterRangeArgument(string name, string description, double defaultValue, double minValue, double maxValue )
+        {
+            this.Arguments.Add(new RangeArgument(name, description, defaultValue, minValue, maxValue));
+        }
+
         public bool GetData<T>(int index, ref T data)
         {
             if (index < this.Arguments.Count)
